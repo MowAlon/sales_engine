@@ -25,4 +25,11 @@ class RepositoryTest < Minitest::Test
 
     assert_nil repo.random
   end
+
+  def test_find_by_throws_error_while_records_are_empty
+    assert_raises(ArgumentError) {
+      repo = Repository.new "sarah"
+      repo.find_by "hello", nil
+    }
+  end
 end
