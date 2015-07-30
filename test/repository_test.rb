@@ -13,4 +13,10 @@ class RepositoryTest < Minitest::Test
 
     assert_kind_of Repository, repo
   end
+
+  def test_all_returns_empty_array_by_default
+    repo = Repository.new "panda"
+
+    assert_equal [], repo.all
+  end
 end
