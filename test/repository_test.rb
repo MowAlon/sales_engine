@@ -7,4 +7,10 @@ class RepositoryTest < Minitest::Test
       repo = Repository.new
     }
   end
+
+  def test_it_takes_string_as_argument
+    repo = Repository.new "hello"
+
+    assert_kind_of Repository, repo
+  end
 end
