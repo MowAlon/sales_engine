@@ -19,4 +19,10 @@ class RepositoryTest < Minitest::Test
 
     assert_equal [], repo.all
   end
+
+  def test_random_returns_nothing_by_default
+    repo = Repository.new "jeff"
+
+    assert_nil repo.random
+  end
 end
