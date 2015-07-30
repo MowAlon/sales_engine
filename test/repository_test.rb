@@ -1,16 +1,10 @@
 require_relative 'test_helper'
+require_relative '../lib/repository'
 
 class RepositoryTest < Minitest::Test
-
-  @@engine = SalesEngine.new
-  @@engine.startup
-
-  def engine
-    @@engine
+  def test_it_throws_error_without_argument
+    assert_raises(ArgumentError) {
+      repo = Repository.new
+    }
   end
-
-  def test_
-    skip
-  end
-
 end
