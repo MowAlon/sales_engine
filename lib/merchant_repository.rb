@@ -10,7 +10,6 @@ class MerchantRepository < Repository
 
     invoices = invoice_items_by_invoice
     invoice_totals = totals_prices_by_invoice(invoices)
-                  require 'pry';binding.pry
   end
 
   def invoice_items_by_invoice
