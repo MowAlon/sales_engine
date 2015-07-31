@@ -10,6 +10,15 @@ class MerchantRepository < Repository
     top_sellers_by_revenue(hash, top_x_sellers).to_h
   end
 
+  def most_items_sold(top_x_sellers)
+    hash = Hash.new(0)
+    successful_transactions.each do |transaction|
+      merchant = transaction_merchant(transaction)
+      hash[merchant.name] += invoice_item_items(transaction)
+    end
+    top_sellers_by_items(hash, top_x_sellers).to_h
+  end
+
   def successful_transactions
     sales_engine.transaction_repository.find_all_by("result", "success")
   end
@@ -34,9 +43,23 @@ class MerchantRepository < Repository
     sum
   end
 
+  def invoice_item_items(transaction)
+    sum = 0
+    invoice_items(transaction).each do |invoice_item|
+      sum += BigDecimal(invoice_item.unit_price)
+    end
+    sum
+  end
+
   def top_sellers_by_revenue(hash, top_x_sellers)
     ranked_sellers(hash, top_x_sellers).map do |merchant, revenue|
       [merchant, dollars(revenue)]
+    end
+  end
+
+  def top_sellers_by_items(hash, top_x_sellers)
+    ranked_sellers(hash, top_x_sellers).map do |merchant, items|
+      [merchant, items_sold(items)]
     end
   end
 
@@ -52,6 +75,10 @@ class MerchantRepository < Repository
     dollar_amount = revenue.to_i.to_s[0..-3].ljust(1, "0")
     cents_amount = revenue.to_i.to_s[-2..-1].rjust(2, "0")
     "Total revenue: $#{dollar_amount}.#{cents_amount}"
+  end
+
+  def items_sold(items)
+    "Total items sold: #{items.to_i}"
   end
 
 

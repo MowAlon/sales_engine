@@ -26,4 +26,18 @@ class MerchantRepositoryTest < Minitest::Test
     assert_equal expected, merchant_repo.most_revenue(top_3)
   end
 
+  def test_most_revenue
+    merchant_repo = MerchantRepository.new(engine)
+    top_4 = 4
+
+    expected = {"Okuneva, Prohaska and Rolfson"=>"Total items sold: 2383272",
+      "Bechtelar, Jones and Stokes"=>"Total items sold: 2220166",
+      "Dickinson-Klein"=>"Total items sold: 1421530",
+      "Tromp Inc"=>"Total items sold: 1355112"}
+
+    assert_equal expected, merchant_repo.most_items_sold(top_4)
+  end
+
+
+
 end
