@@ -1,27 +1,57 @@
 class MerchantRepository < Repository
+  require 'bigdecimal'
 
-
-  def most_revenue(x)
-    # returns the top x merchant instances ranked by total revenue
-        # group invoices by merchant
-        # for each group of invoices, remove those whose transaction failed
-        # of remaining invoices, get all invoice_items and sum their unit prices
-        # ... then sort merchants descending by sums and return x merchants in collection
-
-    invoices = invoice_items_by_invoice
-    invoice_totals = totals_prices_by_invoice(invoices)
-  end
-
-  def invoice_items_by_invoice
-    sales_engine.invoice_item_repository.all.group_by{|invoice_item| invoice_item.invoice_id}
-  end
-
-  def totals_prices_by_invoice(invoices)
-    totals = {}
-    invoices.each do |invoice_id, invoice_items|
-      totals[invoice_id] = invoice_items.reduce(0) {|sum, invoice_item| sum + (invoice_item.quantity.to_i * invoice_item.unit_price.to_i)}
+  def most_revenue(top_x_sellers)
+    hash = Hash.new(0)
+    successful_transactions.each do |transaction|
+      merchant = transaction_merchant(transaction)
+      hash[merchant.name] += invoice_item_revenue(transaction)
     end
-    totals
+    top_sellers_by_revenue(hash, top_x_sellers).to_h
+  end
+
+  def successful_transactions
+    sales_engine.transaction_repository.find_all_by("result", "success")
+  end
+
+  def invoice(transaction)
+    sales_engine.invoice_repository.find_by("id", transaction.invoice_id)
+  end
+
+  def invoice_items(transaction)
+    sales_engine.invoice_item_repository.find_all_by("invoice_id", transaction.invoice_id)
+  end
+
+  def transaction_merchant(transaction)
+    sales_engine.merchant_repository.find_by("id", invoice(transaction).merchant_id)
+  end
+
+  def invoice_item_revenue(transaction)
+    sum = 0
+    invoice_items(transaction).each do |invoice_item|
+      sum += BigDecimal(invoice_item.quantity) * BigDecimal(invoice_item.unit_price)
+    end
+    sum
+  end
+
+  def top_sellers_by_revenue(hash, top_x_sellers)
+    ranked_sellers(hash, top_x_sellers).map do |merchant, revenue|
+      [merchant, dollars(revenue)]
+    end
+  end
+
+  def ranked_sellers(hash, top_x_sellers)
+    sorted_hash(hash)[0..(top_x_sellers - 1)]
+  end
+
+  def sorted_hash(hash)
+    hash.to_a.sort {|x, y| y[1] <=> x[1]}
+  end
+
+  def dollars(revenue)
+    dollar_amount = revenue.to_i.to_s[0..-3].ljust(1, "0")
+    cents_amount = revenue.to_i.to_s[-2..-1].rjust(2, "0")
+    "Total revenue: $#{dollar_amount}.#{cents_amount}"
   end
 
 
