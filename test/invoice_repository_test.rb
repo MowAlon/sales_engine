@@ -37,4 +37,12 @@ class InvoiceRepositoryTest < Minitest::Test
 
     refute_equal 1, instances.uniq.length
   end
+
+  def test_can_find_by_attribute
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_repository
+
+    assert_equal "92", repo.find_by(:customer_id, 10).merchant_id
+  end
 end
