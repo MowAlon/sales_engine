@@ -39,4 +39,12 @@ class CustomerTest < Minitest::Test
     assert_equal expected, customer.transaction_ids
   end
 
+  def test_it_finds_customers_favorite_merchant
+    customer = engine.customer_repository.find_by(:id, 16)
+
+    expected = "Jewess Group"
+
+    assert_equal expected, customer.favorite_merchant
+  end
+
 end
