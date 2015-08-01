@@ -68,7 +68,7 @@ class MerchantRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.merchant_repository
 
-    assert repo.all.length >= 100
+    assert_equal 102, repo.all.length
   end
 
   def test_it_can_return_random_instance
