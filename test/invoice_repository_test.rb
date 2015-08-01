@@ -16,4 +16,12 @@ class InvoiceRepositoryTest < Minitest::Test
 
     assert_kind_of Array, repo.all
   end
+
+  def test_it_can_return_all_instances
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_repository
+
+    assert_equal 1001, repo.all.length
+  end
 end
