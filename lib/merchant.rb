@@ -42,6 +42,7 @@ class Merchant
   def calculate_revenue_on_date(date)
     revenue = 0
     merchant_successful_transactions.each do |transaction|
+      # require 'pry';binding.pry
       revenue += merchant_repository.invoice_item_revenue(transaction) if transaction.created[0..9] == date
     end
     revenue
