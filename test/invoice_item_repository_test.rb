@@ -25,4 +25,17 @@ class InvoiceItemRepositoryTest < Minitest::Test
 
     assert engine.invoice_item_repository.all.length >= 1000
   end
+
+  def test_can_return_random_instance
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_item_repository
+
+    instances = []
+    100.times do
+      instances << repo.random
+    end
+
+    refute instances.uniq.length == 1
+  end
 end
