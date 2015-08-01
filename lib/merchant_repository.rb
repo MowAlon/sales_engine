@@ -24,33 +24,17 @@ class MerchantRepository < Repository
     successful_transactions.each do |transaction|
       revenue += invoice_item_revenue(transaction) if transaction.created[0..9] == date
     end
-    "#{date} #{dollars(revenue)}"
+    "#{date} Total revenue: #{dollars(revenue)}"
   end
 
   private
-
-  def successful_transactions
-    sales_engine.transaction_repository.find_all_by("result", "success")
-  end
 
   def invoice(transaction)
     sales_engine.invoice_repository.find_by("id", transaction.invoice_id)
   end
 
-  def invoice_items(transaction)
-    sales_engine.invoice_item_repository.find_all_by("invoice_id", transaction.invoice_id)
-  end
-
   def transaction_merchant(transaction)
     sales_engine.merchant_repository.find_by("id", invoice(transaction).merchant_id)
-  end
-
-  def invoice_item_revenue(transaction)
-    sum = 0
-    invoice_items(transaction).each do |invoice_item|
-      sum += BigDecimal(invoice_item.quantity) * BigDecimal(invoice_item.unit_price)
-    end
-    sum
   end
 
   def invoice_item_items(transaction)
@@ -79,12 +63,6 @@ class MerchantRepository < Repository
 
   def sorted_hash(hash)
     hash.to_a.sort {|x, y| y[1] <=> x[1]}
-  end
-
-  def dollars(revenue)
-    dollar_amount = revenue.to_i.to_s[0..-3].ljust(1, "0")
-    cents_amount = revenue.to_i.to_s[-2..-1].rjust(2, "0")
-    "Total revenue: $#{dollar_amount}.#{cents_amount}"
   end
 
   def items_sold(items)

@@ -19,14 +19,33 @@ class Merchant
     merchant_repository.sales_engine.invoice_repository.find_all_by(:merchant_id, id)
   end
 
-
-
-  def revenue
+  def total_revenue
+    revenue = 0
     #revenue returns the total revenue for that merchant across all transactions
+    merchant_successful_transactions.each do |transaction|
+      revenue += merchant_repository.invoice_item_revenue(transaction)
+    end
+    "#{name} Total revenue: #{merchant_repository.dollars(revenue)}"
   end
 
-  def revenue(date)
-    #revenue(date) returns the total revenue for that merchant for a specific invoice date
+  def merchant_successful_transactions
+    invoices.map do |invoice|
+      merchant_repository.successful_transactions.find {|t| t.invoice_id == invoice.id}
+    end
+  end
+
+  def revenue_on_date(date)
+    revenue = calculate_revenue_on_date(date)
+    "#{name} Total revenue on #{date}: #{merchant_repository.dollars(revenue)}"
+  end
+
+  def calculate_revenue_on_date(date)
+    revenue = 0
+    merchant_successful_transactions.each do |transaction|
+      # require 'pry';binding.pry
+      revenue += merchant_repository.invoice_item_revenue(transaction) if transaction.created[0..9] == date
+    end
+    revenue
   end
 
   def favorite_customer

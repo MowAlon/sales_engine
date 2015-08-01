@@ -53,4 +53,29 @@ class MerchantTest < Minitest::Test
     assert_equal [], merchant.invoices
   end
 
+  def test_it_finds_total_revenue
+    merchant = engine.merchant_repository.find_by(:id, 4)
+
+    expected = "Cummings-Thiel Total revenue: $1291.44"
+
+    assert_equal expected, merchant.total_revenue
+  end
+
+  def test_it_finds_total_revenue_if_zero
+    merchant = engine.merchant_repository.find_by(:id, 42)
+
+    expected = "Glover Inc Total revenue: $0.00"
+
+    assert_equal expected, merchant.total_revenue
+  end
+
+  def test_it_finds_revenue_by_date
+    date = "2012-03-27"
+    merchant = engine.merchant_repository.find_by(:id, 4)
+
+    expected = "Cummings-Thiel Total revenue on 2012-03-27: $1291.44"
+
+    assert_equal expected, merchant.revenue_on_date(date)
+  end
+
 end
