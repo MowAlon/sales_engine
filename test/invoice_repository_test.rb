@@ -53,4 +53,12 @@ class InvoiceRepositoryTest < Minitest::Test
 
     assert_equal 10, repo.find_all_by(:customer_id, 20).length
   end
+
+  def test_returns_empty_array_if_find_all_returns_nothing
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_repository
+
+    assert_equal [], repo.find_all_by(:id, "-5")
+  end
 end
