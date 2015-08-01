@@ -15,15 +15,21 @@ class Customer
     customer_repository.sales_engine.invoice_repository.find_all_by(:customer_id, id)
   end
 
-
-
-
-  def transactions
-    # returns an array of Transaction instances associated with the customer
+  def transaction_ids
+    transactions.map {|transaction| transaction.id}
   end
 
   def favorite_merchant
     # returns an instance of Merchant where the customer has conducted the most successful transactions
+  end
+
+  private
+
+  def transactions
+    # returns an array of Transaction instances associated with the customer
+    invoices.map do |invoice|
+      customer_repository.sales_engine.transaction_repository.find_by(:invoice_id, invoice.id)
+    end
   end
 
 end
