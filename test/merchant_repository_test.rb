@@ -62,4 +62,12 @@ class MerchantRepositoryTest < Minitest::Test
 
     assert_kind_of Array, repo.all
   end
+
+  def test_it_can_return_all_instances
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.merchant_repository
+
+    assert repo.all.length >= 100
+  end
 end
