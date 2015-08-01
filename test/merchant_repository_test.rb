@@ -47,4 +47,11 @@ class MerchantRepositoryTest < Minitest::Test
     assert_equal expected, merchant_repo.revenue_by_date(date)
   end
 
+  def test_is_a_repository
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.merchant_repository
+
+    assert_kind_of Repository, repo
+  end
 end
