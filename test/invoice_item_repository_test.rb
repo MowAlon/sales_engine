@@ -54,4 +54,12 @@ class InvoiceItemRepositoryTest < Minitest::Test
 
     assert_equal 82, repo.find_all_by(:quantity, 10).length
   end
+
+  def test_returns_empty_array_if_find_all_returns_nothing
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_item_repository
+
+    assert_equal [], repo.find_all_by(:unit_price, "potato")
+  end
 end
