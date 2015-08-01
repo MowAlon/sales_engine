@@ -99,4 +99,12 @@ class MerchantRepositoryTest < Minitest::Test
 
     assert_equal 2, repo.find_all_by(:name, "Williamson Group").length
   end
+
+  def test_returns_empty_array_if_find_all_returns_nothing
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.merchant_repository
+
+    assert_equal [], repo.find_all_by(:name, "Wonka Inc.")
+  end
 end
