@@ -46,4 +46,12 @@ class InvoiceItemRepositoryTest < Minitest::Test
 
     assert_kind_of InvoiceItem, repo.find_by(:invoice_id, 2)
   end
+
+  def test_can_find_all_by_quantity
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_item_repository
+
+    assert_equal 82, repo.find_all_by(:quantity, 10).length
+  end
 end
