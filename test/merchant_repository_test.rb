@@ -81,6 +81,6 @@ class MerchantRepositoryTest < Minitest::Test
       instances << repo.random
     end
 
-    refute instances.uniq.length < 20
+    refute_equal 1, instances.uniq.length
   end
 end
