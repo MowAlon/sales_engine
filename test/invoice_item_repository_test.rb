@@ -12,4 +12,10 @@ class InvoiceItemRepositoryTest < Minitest::Test
 
     assert_kind_of InvoiceItemRepository, engine.invoice_item_repository
   end
+
+  def test_it_can_return_all_instances_as_array
+    engine = SalesEngine.new
+
+    assert_kind_of Array, engine.invoice_item_repository.all
+  end
 end
