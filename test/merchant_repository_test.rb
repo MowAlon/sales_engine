@@ -70,4 +70,17 @@ class MerchantRepositoryTest < Minitest::Test
 
     assert repo.all.length >= 100
   end
+
+  def test_it_can_return_random_instance
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.merchant_repository
+
+    instances = []
+    100.times do
+      instances << repo.random
+    end
+
+    refute instances.uniq.length < 20
+  end
 end
