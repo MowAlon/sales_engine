@@ -83,4 +83,12 @@ class MerchantRepositoryTest < Minitest::Test
 
     refute_equal 1, instances.uniq.length
   end
+
+  def test_can_find_by_attribute
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.merchant_repository
+
+    assert_equal "5", repo.find_by(:name, "Williamson Group").id
+  end
 end
