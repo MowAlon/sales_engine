@@ -19,6 +19,16 @@ class MerchantRepository < Repository
     top_sellers_by_items(hash, top_x_sellers).to_h
   end
 
+  def revenue_by_date(date)
+    revenue = 0
+    successful_transactions.each do |transaction|
+      revenue += invoice_item_revenue(transaction) if transaction.created[0..9] == date
+    end
+    "#{date} #{dollars(revenue)}"
+  end
+
+  private
+
   def successful_transactions
     sales_engine.transaction_repository.find_all_by("result", "success")
   end
@@ -79,35 +89,6 @@ class MerchantRepository < Repository
 
   def items_sold(items)
     "Total items sold: #{items.to_i}"
-  end
-
-
-
-
-
-
-
-
-
-    #hash of merchant_ids holding invoice objects
-    # successful_transactions = sales_engine.transaction_repository.find_all_by(:result, 'success')
-    # successful_invoice_ids = successful_transactions.map {|transaction| transaction.invoice_id}.uniq
-    #
-    # invoice_items_by_invoice_id_hash = sales_engine.invoice_item_repository.all.group_by{|invoice_item| invoice_item.invoice_id}
-    # successful_invoice_items_by_invoice_id_hash = invoice_items_by_invoice_id_hash.select{|invoice_id,invoice_item| successful_invoice_ids.include?(invoice_id)}
-    # successful_invoice_items_by_invoice_id_hash.reduce{|sum, invoice_item| sum + (invoice_item.quantity * invoice_item.unit_price)}
-    #
-    #
-    #
-    #
-    # sales_engine.invoice_repository.all.group_by{|invoice| invoice.merchant_id}
-
-  def most_items(x)
-    # returns the top x merchant instances ranked by total number of items sold
-  end
-
-  def revenue(date)
-    # returns the total revenue for that date across all merchants
   end
 
 end
