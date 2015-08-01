@@ -38,4 +38,12 @@ class InvoiceItemRepositoryTest < Minitest::Test
 
     refute instances.uniq.length == 1
   end
+
+  def test_can_find_by_invoice_id
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_item_repository
+
+    assert_kind_of InvoiceItem, repo.find_by(:invoice_id, 2)
+  end
 end
