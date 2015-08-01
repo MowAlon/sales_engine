@@ -38,13 +38,13 @@ class MerchantRepositoryTest < Minitest::Test
     assert_equal expected, merchant_repo.most_items_sold(top_4)
   end
 
-def test_it_finds_total_revenue_by_date
-  merchant_repo = MerchantRepository.new(engine)
-  date = "2012-03-27"
+  def test_it_finds_total_revenue_by_date
+    merchant_repo = MerchantRepository.new(engine)
+    date = "2012-03-27"
 
-  expected = "2012-03-27 Total revenue: $2612315.08"
+    expected = "2012-03-27 Total revenue: $2612315.08"
 
-  assert_equal expected, merchant_repo.revenue_by_date(date)
-end
+    assert_equal expected, merchant_repo.revenue_by_date(date)
+  end
 
 end
