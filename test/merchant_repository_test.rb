@@ -91,4 +91,12 @@ class MerchantRepositoryTest < Minitest::Test
 
     assert_equal "5", repo.find_by(:name, "Williamson Group").id
   end
+
+  def test_can_find_all_by_attribute
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.merchant_repository
+
+    assert_equal 2, repo.find_all_by(:name, "Williamson Group").length
+  end
 end
