@@ -19,13 +19,23 @@ class Merchant
     merchant_repository.sales_engine.invoice_repository.find_all_by(:merchant_id, id)
   end
 
-
-
-  def revenue
+  def total_revenue
+    revenue = 0
     #revenue returns the total revenue for that merchant across all transactions
+    merchant_successful_transactions.each do |transaction|
+      revenue += merchant_repository.invoice_item_revenue(transaction)
+    end
+    "#{name} Total revenue: #{merchant_repository.dollars(revenue)}"
   end
 
-  def revenue(date)
+  def merchant_successful_transactions
+    a = invoices.map do |invoice|
+      merchant_repository.successful_transactions.find {|t| t.invoice_id == invoice.id}
+    end
+    a
+  end
+
+  def revenue_by_date(date)
     #revenue(date) returns the total revenue for that merchant for a specific invoice date
   end
 

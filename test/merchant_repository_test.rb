@@ -42,7 +42,7 @@ def test_it_finds_total_revenue_by_date
   merchant_repo = MerchantRepository.new(engine)
   date = "2012-03-27"
 
-  expected = "2012-03-27 Total revenue: $2612315.38"
+  expected = "2012-03-27 Total revenue: $2612315.08"
 
   assert_equal expected, merchant_repo.revenue_by_date(date)
 end
