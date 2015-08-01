@@ -29,14 +29,22 @@ class Merchant
   end
 
   def merchant_successful_transactions
-    a = invoices.map do |invoice|
+    invoices.map do |invoice|
       merchant_repository.successful_transactions.find {|t| t.invoice_id == invoice.id}
     end
-    a
   end
 
-  def revenue_by_date(date)
-    #revenue(date) returns the total revenue for that merchant for a specific invoice date
+  def revenue_on_date(date)
+    revenue = calculate_revenue_on_date(date)
+    "#{name} Total revenue on #{date}: #{merchant_repository.dollars(revenue)}"
+  end
+
+  def calculate_revenue_on_date(date)
+    revenue = 0
+    merchant_successful_transactions.each do |transaction|
+      revenue += merchant_repository.invoice_item_revenue(transaction) if transaction.created[0..9] == date
+    end
+    revenue
   end
 
   def favorite_customer

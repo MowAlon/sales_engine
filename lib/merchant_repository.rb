@@ -20,21 +20,18 @@ class MerchantRepository < Repository
   end
 
   def revenue_by_date(date)
-    revenue = 0
-    successful_transactions.each do |transaction|
-      revenue += invoice_item_revenue(transaction) if transaction.created[0..9] == date
-    end
+    merchants.each
     "#{date} Total revenue: #{dollars(revenue)}"
   end
 
   private
 
   def invoice(transaction)
-    sales_engine.invoice_repository.find_by("id", transaction.invoice_id)
+    self.find_by("id", transaction.invoice_id)
   end
 
   def transaction_merchant(transaction)
-    sales_engine.merchant_repository.find_by("id", invoice(transaction).merchant_id)
+    self.find_by("id", invoice(transaction).merchant_id)
   end
 
   def invoice_item_items(transaction)

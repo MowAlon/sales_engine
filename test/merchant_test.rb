@@ -54,7 +54,6 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_finds_total_revenue
-    # skip
     merchant = engine.merchant_repository.find_by(:id, 4)
 
     expected = "Cummings-Thiel Total revenue: $1291.44"
@@ -71,7 +70,12 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_finds_revenue_by_date
+    date = "2012-03-27"
+    merchant = engine.merchant_repository.find_by(:id, 4)
 
+    expected = "Cummings-Thiel Total revenue on 2012-03-27: $1291.44"
+
+    assert_equal expected, merchant.revenue_on_date(date)
   end
 
 end
