@@ -81,7 +81,7 @@ class MerchantTest < Minitest::Test
   def test_it_finds_favorite_customer
     merchant = engine.merchant_repository.find_by(:id, 7)
 
-    expected = "Favorite customer name: TED, customer id: 3"
+    expected = "Favorite customer name: Wilfred Emmerich, customer id: 28, with 2 successful transactions"
 
     assert_equal expected, merchant.favorite_customer
   end

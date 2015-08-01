@@ -49,10 +49,18 @@ class Merchant
 
   def favorite_customer
     #favorite_customer returns the Customer who has conducted the most successful transactions
+     ranked_customers = customer_transactions_hash.to_a.sort {|x,y| y[1] <=> x[1]}
+     "Favorite customer name: #{ranked_customers[0][0].first_name} #{ranked_customers[0][0].last_name}, customer id: #{ranked_customers[0][0].id}, with #{ranked_customers[0][1]} successful transactions"
+  end
+
+  def customer_transactions_hash
     hash = Hash.new(0)
     merchant_successful_transactions.each do |transaction|
-      hash[] += merchant_repository.invoice_item_revenue(transaction) if transaction.created[0..9] == date
+      invoice = invoices.find {|invoice| invoice.id == transaction.invoice.id}
+      customer = merchant_repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id )
+      hash[customer] += 1
     end
+    hash
   end
 
   def customers_with_pending_invoices
