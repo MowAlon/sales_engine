@@ -43,6 +43,6 @@ class InvoiceRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.invoice_repository
 
-    assert_equal "92", repo.find_by(:customer_id, 10).merchant_id
+    assert_equal "10", repo.find_by(:merchant_id, 92).customer_id
   end
 end
