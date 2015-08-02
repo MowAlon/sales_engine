@@ -6,4 +6,10 @@ class CustomerRepositoryTest < Minitest::Test
 
     assert_kind_of Repository, repo
   end
+
+  def test_it_is_created_by_engine
+    engine = SalesEngine.new
+
+    assert_kind_of CustomerRepository, engine.customer_repository
+  end
 end
