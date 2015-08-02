@@ -65,6 +65,23 @@ class Merchant
 
   def customers_with_pending_invoices
     #customers_with_pending_invoices returns a collection of Customer instances which have pending (unpaid) invoices. An invoice is considered pending if none of it’s transactions are successful.
+    naughty_customers = {}
+    all_pending.each do |invoice|
+      customer = merchant_repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id)
+      naughty_customers[customer.id] = "#{customer.first_name} #{customer.last_name}"
+    end
+    naughty_customers
+  end
+
+  def all_pending
+    invoices.select do |invoice|
+      invoice if no_successful_transactions?(invoice)
+    end
+  end
+
+  def no_successful_transactions?(invoice)
+    transactions = merchant_repository.sales_engine.transaction_repository.find_all_by(:invoice_id, invoice.id)
+    transactions.none? {|transaction| transaction.result == "success"}
   end
 
 # NOTE: Failed charges should never be counted in revenue totals or statistics.

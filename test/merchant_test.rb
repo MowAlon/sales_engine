@@ -86,4 +86,12 @@ class MerchantTest < Minitest::Test
     assert_equal expected, merchant.favorite_customer
   end
 
+  def test_it_finds_customers_with_pending_invoices
+    merchant = engine.merchant_repository.find_by(:id, 34)
+
+    expected = {"3"=>"Mariah Toy", "169"=>"Valentine Lang", "184"=>"Cyril Kilback"}
+
+    assert_equal expected, merchant.customers_with_pending_invoices
+  end
+
 end
