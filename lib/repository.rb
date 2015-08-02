@@ -52,4 +52,22 @@ class Repository
     sales_engine.invoice_item_repository.find_all_by("invoice_id", transaction.invoice_id)
   end
 
+  def invoice(transaction)
+    sales_engine.invoice_repository.find_by("id", transaction.invoice_id)
+  end
+
+  def top_sellers_by_revenue(hash, top_x_sellers)
+    ranked_sellers(hash, top_x_sellers).map do |merchant, revenue|
+      [merchant, dollars(revenue)]
+    end
+  end
+
+  def ranked_sellers(hash, top_x_sellers)
+    sorted_hash(hash)[0..(top_x_sellers - 1)]
+  end
+
+  def sorted_hash(hash)
+    hash.to_a.sort {|x, y| y[1] <=> x[1]}
+  end  
+
 end

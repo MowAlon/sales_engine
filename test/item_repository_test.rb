@@ -41,4 +41,12 @@ class ItemRepositoryTest < Minitest::Test
   def test_returns_empty_array_if_find_all_returns_nothing
     assert_equal [], repo.find_all_by(:id, "-5")
   end
+
+  def test_it_finds_item_with_most_revenue
+    top_x_items = 3
+
+    expected = {"206"=>"$281219.04", "227"=>"$244012.03", "584"=>"$136104.85"}
+
+    assert_equal expected, repo.most_revenue(top_x_items)
+  end
 end
