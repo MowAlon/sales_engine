@@ -26,4 +26,16 @@ class TransactionRepositoryTest < Minitest::Test
     assert_equal 1001, engine.transaction_repository.all.length
   end
 
+  def test_can_return_random_instance
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.transaction_repository
+
+    instances = []
+    100.times do
+      instances << repo.random
+    end
+
+    refute instances.uniq.length == 1
+  end
 end
