@@ -68,6 +68,16 @@ class Repository
 
   def sorted_hash(hash)
     hash.to_a.sort {|x, y| y[1] <=> x[1]}
-  end  
+  end
+
+  def top_sellers_by_items(hash, top_x_sellers)
+    ranked_sellers(hash, top_x_sellers).map do |seller, items|
+      [seller, items_sold(items)]
+    end
+  end
+
+  def items_sold(items)
+    "Total items sold: #{items.to_i}"
+  end
 
 end

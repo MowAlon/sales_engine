@@ -41,14 +41,4 @@ class MerchantRepository < Repository
     sum
   end
 
-  def top_sellers_by_items(hash, top_x_sellers)
-    ranked_sellers(hash, top_x_sellers).map do |merchant, items|
-      [merchant, items_sold(items)]
-    end
-  end
-
-  def items_sold(items)
-    "Total items sold: #{items.to_i}"
-  end
-
 end
