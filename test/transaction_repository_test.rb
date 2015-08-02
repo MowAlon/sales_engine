@@ -54,4 +54,12 @@ class TransactionRepositoryTest < Minitest::Test
 
     assert_equal 823, repo.find_all_by(:result, "success").length
   end
+
+  def test_returns_empty_array_if_find_all_returns_nothing
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.transaction_repository
+
+    assert_equal [], repo.find_all_by(:credit_card_number, "1234567812345678")
+  end
 end
