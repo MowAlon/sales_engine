@@ -39,7 +39,7 @@ class TransactionRepositoryTest < Minitest::Test
     refute instances.uniq.length == 1
   end
 
-  def test_can_find_by_invoice_id
+  def test_can_find_by_attribute
     engine = SalesEngine.new
     engine.startup
     repo = engine.transaction_repository
@@ -47,7 +47,7 @@ class TransactionRepositoryTest < Minitest::Test
     assert_kind_of Transaction, repo.find_by(:invoice_id, 5)
   end
 
-  def test_can_find_all_by_quantity
+  def test_can_find_all_by_attribute
     engine = SalesEngine.new
     engine.startup
     repo = engine.transaction_repository
