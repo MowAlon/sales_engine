@@ -6,4 +6,10 @@ class TransactionRepositoryTest < Minitest::Test
 
     assert_kind_of Repository, repo
   end
+
+  def test_it_is_created_by_engine
+    engine = SalesEngine.new
+
+    assert_kind_of TransactionRepository, engine.transaction_repository
+  end
 end
