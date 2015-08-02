@@ -47,10 +47,51 @@ class MerchantTest < Minitest::Test
     assert_equal ['28', '37', '84', '107', '149'], customer_ids
   end
 
-  def test_invoices__it_returns_an_empty_array_when_no_invoices_are_associated_with_the_merchant
+  def test_invoices_it_returns_an_empty_array_when_no_invoices_are_associated_with_the_merchant
     merchant = engine.merchant_repository.find_by(:id, 101)
 
     assert_equal [], merchant.invoices
+  end
+
+  def test_it_finds_total_revenue
+    merchant = engine.merchant_repository.find_by(:id, 4)
+
+    expected = "Cummings-Thiel Total revenue: $1291.44"
+
+    assert_equal expected, merchant.total_revenue
+  end
+
+  def test_it_finds_total_revenue_if_zero
+    merchant = engine.merchant_repository.find_by(:id, 42)
+
+    expected = "Glover Inc Total revenue: $0.00"
+
+    assert_equal expected, merchant.total_revenue
+  end
+
+  def test_it_finds_revenue_by_date
+    date = "2012-03-27"
+    merchant = engine.merchant_repository.find_by(:id, 4)
+
+    expected = "Cummings-Thiel Total revenue on 2012-03-27: $1291.44"
+
+    assert_equal expected, merchant.revenue_on_date(date)
+  end
+
+  def test_it_finds_favorite_customer
+    merchant = engine.merchant_repository.find_by(:id, 7)
+
+    expected = "Favorite customer name: Wilfred Emmerich, customer id: 28, with 2 successful transactions"
+
+    assert_equal expected, merchant.favorite_customer
+  end
+
+  def test_it_finds_customers_with_pending_invoices
+    merchant = engine.merchant_repository.find_by(:id, 34)
+
+    expected = {"3"=>"Mariah Toy", "169"=>"Valentine Lang", "184"=>"Cyril Kilback"}
+
+    assert_equal expected, merchant.customers_with_pending_invoices
   end
 
 end

@@ -26,9 +26,25 @@ class CustomerTest < Minitest::Test
   end
 
   def test_invoices__it_returns_an_empty_array_when_no_invoices_are_associated_with_the_customer
-    customer = engine.customer_repository.find_by(:id, 300)
+    customer = engine.customer_repository.find_by(:id, 999)
 
     assert_equal [], customer.invoices
+  end
+
+  def test_it_finds_all_transactions_by_the_customer
+    customer = engine.customer_repository.find_by(:id, 25)
+
+    expected = ["146", "147", "148", "149", "150", "151"]
+
+    assert_equal expected, customer.transaction_ids
+  end
+
+  def test_it_finds_customers_favorite_merchant
+    customer = engine.customer_repository.find_by(:id, 16)
+
+    expected = "Jewess Group"
+
+    assert_equal expected, customer.favorite_merchant
   end
 
 end

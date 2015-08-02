@@ -9,8 +9,4 @@ class SalesEngineTest < Minitest::Test
     @@engine
   end
 
-  def test_
-    skip
-  end
-
 end
