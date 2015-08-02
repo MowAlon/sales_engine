@@ -54,4 +54,12 @@ class CustomerRepositoryTest < Minitest::Test
 
     assert_equal 3, repo.find_all_by(:last_name, "Wolf").length
   end
+
+  def test_returns_empty_array_if_find_all_returns_nothing
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.customer_repository
+
+    assert_equal [], repo.find_all_by(:last_name, "Casmir")
+  end
 end
