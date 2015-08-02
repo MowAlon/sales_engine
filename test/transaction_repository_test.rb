@@ -46,4 +46,12 @@ class TransactionRepositoryTest < Minitest::Test
 
     assert_kind_of Transaction, repo.find_by(:invoice_id, 5)
   end
+
+  def test_can_find_all_by_quantity
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.transaction_repository
+
+    assert_equal 823, repo.find_all_by(:result, "success").length
+  end
 end
