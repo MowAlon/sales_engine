@@ -47,7 +47,7 @@ class ItemTest < Minitest::Test
   def test_it_knows_best_day_for_sales
     item = engine.item_repository.find_by(:id, 127)
 
-    expected = "best day for #{item.name} sales is day with x number units sold"
+    expected = "best day for Item Ut Illum sales is 2012-03-27 with 5 units sold"
 
     assert_equal expected, item.best_day
   end
