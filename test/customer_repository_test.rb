@@ -18,4 +18,11 @@ class CustomerRepositoryTest < Minitest::Test
 
     assert_kind_of Array, engine.customer_repository.all
   end
+
+  def test_can_return_all_instances
+    engine = SalesEngine.new
+    engine.startup
+
+    assert_equal 1001, engine.customer_repository.all.length
+  end
 end
