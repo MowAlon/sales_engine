@@ -38,4 +38,12 @@ class CustomerRepositoryTest < Minitest::Test
 
     refute instances.uniq.length == 1
   end
+
+  def test_can_find_by_attribute
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.customer_repository
+
+    assert_kind_of Customer, repo.find_by(:first_name, "Jeffrey")
+  end
 end
