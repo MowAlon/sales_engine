@@ -42,7 +42,6 @@ class Merchant
   def calculate_revenue_on_date(date)
     revenue = 0
     merchant_successful_transactions.each do |transaction|
-      # require 'pry';binding.pry
       revenue += merchant_repository.invoice_item_revenue(transaction) if transaction.created[0..9] == date
     end
     revenue
@@ -50,10 +49,39 @@ class Merchant
 
   def favorite_customer
     #favorite_customer returns the Customer who has conducted the most successful transactions
+     ranked_customers = customer_transactions_hash.to_a.sort {|x,y| y[1] <=> x[1]}
+     "Favorite customer name: #{ranked_customers[0][0].first_name} #{ranked_customers[0][0].last_name}, customer id: #{ranked_customers[0][0].id}, with #{ranked_customers[0][1]} successful transactions"
+  end
+
+  def customer_transactions_hash
+    hash = Hash.new(0)
+    merchant_successful_transactions.each do |transaction|
+      invoice = invoices.find {|invoice| invoice.id == transaction.invoice.id}
+      customer = merchant_repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id )
+      hash[customer] += 1
+    end
+    hash
   end
 
   def customers_with_pending_invoices
     #customers_with_pending_invoices returns a collection of Customer instances which have pending (unpaid) invoices. An invoice is considered pending if none of it’s transactions are successful.
+    naughty_customers = {}
+    all_pending.each do |invoice|
+      customer = merchant_repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id)
+      naughty_customers[customer.id] = "#{customer.first_name} #{customer.last_name}"
+    end
+    naughty_customers
+  end
+
+  def all_pending
+    invoices.select do |invoice|
+      invoice if no_successful_transactions?(invoice)
+    end
+  end
+
+  def no_successful_transactions?(invoice)
+    transactions = merchant_repository.sales_engine.transaction_repository.find_all_by(:invoice_id, invoice.id)
+    transactions.none? {|transaction| transaction.result == "success"}
   end
 
 # NOTE: Failed charges should never be counted in revenue totals or statistics.
