@@ -46,4 +46,12 @@ class CustomerRepositoryTest < Minitest::Test
 
     assert_kind_of Customer, repo.find_by(:first_name, "Jeffrey")
   end
+
+  def test_can_find_all_by_attribute
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.customer_repository
+
+    assert_equal 3, repo.find_all_by(:last_name, "Wolf").length
+  end
 end
