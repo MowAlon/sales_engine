@@ -12,4 +12,10 @@ class TransactionRepositoryTest < Minitest::Test
 
     assert_kind_of TransactionRepository, engine.transaction_repository
   end
+
+  def test_it_can_return_all_instances_as_array
+    engine = SalesEngine.new
+
+    assert_kind_of Array, engine.transaction_repository.all
+  end
 end
