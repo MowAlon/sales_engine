@@ -30,4 +30,26 @@ class Repository
     end
   end
 
+  def successful_transactions
+    sales_engine.transaction_repository.find_all_by("result", "success")
+  end
+
+  def invoice_item_revenue(transaction)
+    sum = 0
+    invoice_items(transaction).each do |invoice_item|
+      sum += BigDecimal(invoice_item.quantity) * BigDecimal(invoice_item.unit_price)
+    end
+    sum
+  end
+
+  def dollars(revenue)
+    dollar_amount = revenue.to_i.to_s[0..-3].ljust(1, "0")
+    cents_amount = revenue.to_i.to_s.delete(revenue.to_i.to_s[0..-3]).rjust(2, "0")
+    "$#{dollar_amount}.#{cents_amount}"
+  end
+
+  def invoice_items(transaction)
+    sales_engine.invoice_item_repository.find_all_by("invoice_id", transaction.invoice_id)
+  end
+
 end
