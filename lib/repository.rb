@@ -27,7 +27,7 @@ class Repository
   end
 
   def successful_transactions
-    sales_engine.transaction_repository.find_all_by("result", "success")
+    sales_engine.transaction_repository.find_all_by(:result, "success")
   end
 
   def invoice_item_revenue(transaction)
