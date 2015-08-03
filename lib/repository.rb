@@ -45,11 +45,11 @@ class Repository
   end
 
   def invoice_items(transaction)
-    sales_engine.invoice_item_repository.find_all_by("invoice_id", transaction.invoice_id)
+    sales_engine.invoice_item_repository.find_all_by(:invoice_id, transaction.invoice_id)
   end
 
   def invoice(transaction)
-    sales_engine.invoice_repository.find_by("id", transaction.invoice_id)
+    sales_engine.invoice_repository.find_by(:id, transaction.invoice_id)
   end
 
   def top_sellers_by_revenue(hash, top_x_sellers)
