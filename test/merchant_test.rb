@@ -47,12 +47,6 @@ class MerchantTest < Minitest::Test
     assert_equal ['28', '37', '84', '107', '149'], customer_ids
   end
 
-  def test_invoices_it_returns_an_empty_array_when_no_invoices_are_associated_with_the_merchant
-    merchant = engine.merchant_repository.find_by(:id, 101)
-
-    assert_equal [], merchant.invoices
-  end
-
   def test_it_finds_total_revenue
     merchant = engine.merchant_repository.find_by(:id, 4)
 

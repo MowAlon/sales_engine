@@ -10,7 +10,7 @@ class CustomerTest < Minitest::Test
   end
 
   def test_invoices__it_returns_an_array_of_invoices
-    customer = engine.customer_repository.find_by(:id, 21)
+    customer = engine.customer_repository.find_by(:id, 999)
 
     assert_equal Array, customer.invoices.class
     assert customer.invoices.all?{|invoice| invoice.class == Invoice}
