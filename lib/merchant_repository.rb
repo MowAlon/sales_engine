@@ -40,5 +40,4 @@ class MerchantRepository < Repository
     end
     sum
   end
-
 end

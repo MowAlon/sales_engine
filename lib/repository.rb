@@ -80,4 +80,7 @@ class Repository
     "Total items sold: #{items.to_i}"
   end
 
+  def inspect
+    "#<#{self.class} #{all.size} rows>"
+  end
 end

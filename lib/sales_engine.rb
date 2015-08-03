@@ -18,7 +18,7 @@ class SalesEngine
   attr_reader :merchant_repository, :invoice_repository, :item_repository
   attr_reader :invoice_item_repository, :customer_repository, :transaction_repository
 
-  def initialize
+  def initialize(args=nil)
   	@merchant_repository = MerchantRepository.new(self)
     @invoice_repository = InvoiceRepository.new(self)
     @item_repository = ItemRepository.new(self)
@@ -36,7 +36,7 @@ class SalesEngine
     classes = tables.map {|table| table.split('_').map{|word| word.capitalize}.join}
     tables = tables.zip(classes)
   	tables.map do |table|
-      CSV.foreach("./data/#{table.first}s.csv") do |row|
+      CSV.foreach("../sales_engine/data/#{table.first}s.csv") do |row|
         eval("#{table.first}_repository").records << eval(table.last).new(row, eval("#{table.first}_repository"))
       end
     end
