@@ -1,12 +1,11 @@
 require_relative 'test_helper'
 
 class ItemTest < Minitest::Test
+  attr_reader :engine
 
-  @@engine = SalesEngine.new
-  @@engine.startup
-
-  def engine
-    @@engine
+  def setup
+    @engine = SalesEngine.new
+    @engine.startup
   end
 
   def test_invoice_items__it_returns_an_array_of_invoice_items
@@ -43,6 +42,14 @@ class ItemTest < Minitest::Test
 
     assert_equal "8", item.merchant.id
     assert_equal "Osinski, Pollich and Koelpin", item.merchant.name
+  end
+
+  def test_it_knows_best_day_for_sales
+    item = engine.item_repository.find_by(:id, 127)
+
+    expected = "best day for Item Ut Illum sales is 2012-03-27 with 5 units sold"
+
+    assert_equal expected, item.best_day
   end
 
 end
