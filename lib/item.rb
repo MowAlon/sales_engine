@@ -3,17 +3,6 @@ require_relative 'data_instance'
 class Item < DataInstance
   attr_reader :name, :description, :unit_price, :merchant_id
 
-  def initialize(item, repository)
-    @repository = repository
-    @id = item[:id]
-    @name = item[:name]
-    @description = item[:description]
-    @unit_price = item[:unit_price]
-    @merchant_id = item[:merchant_id]
-    @created = item[:created_at]
-    @updated = item[:updated_at]
-  end
-
   def invoice_items
     # returns a collection of InvoiceItems associated with this object
     repository.sales_engine.invoice_item_repository.find_all_by(:item_id, id)
@@ -30,7 +19,7 @@ class Item < DataInstance
     #add quantity if transaction successful
     hash = Hash.new(0)
     invoice_items.each do |invoice_item|
-      hash[invoice_item.created[0..9]] += invoice_item.quantity.to_i if transaction_successful?(invoice_item)
+      hash[invoice_item.created_at[0..9]] += invoice_item.quantity.to_i if transaction_successful?(invoice_item)
     end
     sales = hash.values.sort[-1]
     date = hash.key(sales)

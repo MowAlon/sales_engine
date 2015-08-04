@@ -3,15 +3,6 @@ require_relative 'data_instance'
 class Customer < DataInstance
   attr_reader :first_name, :last_name
 
-  def initialize(attributes, repository)
-    @repository = repository
-    @id = attributes[:id]
-    @first_name = attributes[:first_name]
-    @last_name = attributes[:last_name]
-    @created = attributes[:created_at]
-    @updated = attributes[:updated_at]
-  end
-
   def invoices
     # returns a collection of Invoice instances associated with this object.
     repository.sales_engine.invoice_repository.find_all_by(:customer_id, id)

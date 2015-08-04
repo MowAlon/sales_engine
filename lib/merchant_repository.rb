@@ -22,7 +22,7 @@ class MerchantRepository < Repository
   def revenue_by_date(date)
     revenue = 0
     successful_transactions.each do |transaction|
-      revenue += invoice_item_revenue(transaction) if transaction.created[0..9] == date
+      revenue += invoice_item_revenue(transaction) if transaction.created_at[0..9] == date
     end
     "#{date} Total revenue: #{dollars(revenue)}"
   end

@@ -3,14 +3,6 @@ require_relative 'data_instance'
 class Merchant < DataInstance
   attr_reader :name
 
-  def initialize(merchant, repository)
-    @repository = repository
-    @id = merchant[:id]
-    @name = merchant[:name]
-    @created = merchant[:created_at]
-    @updated = merchant[:updated_at]
-  end
-
   def items
     # returns a collection of Item instances associated with that merchant for the products they sell
     repository.sales_engine.item_repository.find_all_by(:merchant_id, id)
@@ -44,7 +36,7 @@ class Merchant < DataInstance
   def calculate_revenue_on_date(date)
     revenue = 0
     merchant_successful_transactions.each do |transaction|
-      revenue += repository.invoice_item_revenue(transaction) if transaction.created[0..9] == date
+      revenue += repository.invoice_item_revenue(transaction) if transaction.created_at[0..9] == date
     end
     revenue
   end
