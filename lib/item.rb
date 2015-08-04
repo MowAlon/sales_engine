@@ -1,10 +1,10 @@
 require_relative 'data_instance'
 
 class Item < DataInstance
-  attr_reader :item_repository, :name, :description, :unit_price, :merchant_id
+  attr_reader :repository, :name, :description, :unit_price, :merchant_id
 
-  def initialize(item, item_repository)
-    @item_repository = item_repository
+  def initialize(item, repository)
+    @repository = repository
     @id = item[0]
     @name = item[1]
     @description = item[2]
@@ -16,12 +16,12 @@ class Item < DataInstance
 
   def invoice_items
     # returns a collection of InvoiceItems associated with this object
-    item_repository.sales_engine.invoice_item_repository.find_all_by(:item_id, id)
+    repository.sales_engine.invoice_item_repository.find_all_by(:item_id, id)
   end
 
   def merchant
     # returns an instance of Merchant associated with this object
-    item_repository.sales_engine.merchant_repository.find_by(:id, merchant_id)
+    repository.sales_engine.merchant_repository.find_by(:id, merchant_id)
   end
 
   def best_day
@@ -42,11 +42,10 @@ class Item < DataInstance
   end
 
   def invoice(invoice_item)
-    item_repository.sales_engine.invoice_repository.find_by(:id, invoice_item.invoice_id)
+    repository.sales_engine.invoice_repository.find_by(:id, invoice_item.invoice_id)
   end
 
   def item_transactions(invoice_item)
-    item_repository.sales_engine.transaction_repository.find_all_by(:invoice_id, invoice(invoice_item).id)
+    repository.sales_engine.transaction_repository.find_all_by(:invoice_id, invoice(invoice_item).id)
   end
-
 end

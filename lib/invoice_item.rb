@@ -24,13 +24,8 @@ class InvoiceItem < DataInstance
     repository.sales_engine.item_repository.find_by(:id, item_id)
   end
 
-
-
-
   #untested
   def revenue
     quantity.to_i * unit_price.to_i
   end
-
-
 end
