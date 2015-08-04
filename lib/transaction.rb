@@ -1,11 +1,11 @@
 require_relative 'data_instance'
 
 class Transaction < DataInstance
-  attr_reader :transaction_repository, :invoice_id, :credit_card_number
+  attr_reader :repository, :invoice_id, :credit_card_number
   attr_reader :credit_card_expiration_date, :result
 
-  def initialize(transaction, transaction_repository)
-    @transaction_repository = transaction_repository
+  def initialize(transaction, repository)
+    @repository = repository
     @id = transaction[0]
     @invoice_id = transaction[1]
     @credit_card_number = transaction[2]
@@ -17,7 +17,7 @@ class Transaction < DataInstance
 
   def invoice
     # returns an instance of Invoice associated with this object
-    transaction_repository.sales_engine.invoice_repository.find_by(:id, invoice_id)
+    repository.sales_engine.invoice_repository.find_by(:id, invoice_id)
   end
 
 end
