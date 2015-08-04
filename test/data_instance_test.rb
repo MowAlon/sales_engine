@@ -36,4 +36,16 @@ class DataInstanceTest < Minitest::Test
 
     assert_equal "3", transaction.id
   end
+
+  def test_all_referred_by_returns_array
+    engine = SalesEngine.new
+    engine.startup
+    item = engine.item_repository.find_by(:id, 1)
+    invoice_items = item.all_referred_by(engine.invoice_item_repository)
+
+    assert_equal 3, invoice_items.length
+    invoice_items.each do |invoice_item|
+      assert_kind_of InvoiceItem, invoice_item
+    end
+  end
 end

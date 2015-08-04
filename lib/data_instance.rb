@@ -8,6 +8,10 @@ class DataInstance
     end
   end
 
+  def all_referred_by search_repository
+    search_repository.find_all_by(reference, id)
+  end
+
   def referred_by search_repository
     search_repository.find_by(reference, id)
   end
