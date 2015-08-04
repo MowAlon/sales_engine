@@ -53,6 +53,8 @@ end
 engine = SalesEngine.new
 engine.startup
 
+#invoice_items = Hash.new {|hash, key| hash[key] = {}}
+
 # require 'pry'; binding.pry
 
 

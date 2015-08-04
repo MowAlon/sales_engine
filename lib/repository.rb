@@ -15,7 +15,32 @@ class Repository
   end
 
   def find_by(field, value)
-    find_all_by(field, value)[0]
+    #records.bsearch {|record| record.field <=> id} only works if records are SORTED by field!
+    if records[0].respond_to?(field)
+      records.find {|record| (record.send field).to_s.downcase == value.to_s.downcase}
+    else
+      raise ArgumentError, "Attempted to locate records by '#{field}', but that isn't a valid field for #{records[0].class} objects."
+    end
+  end
+
+  def find_by_credit_card_number(value)
+    find_by(:credit_card_number, value)
+  end
+
+  def find_by_id(value)
+    find_by(:id, value)
+  end
+
+  def find_by_name(value)
+    find_by(:name, value)
+  end
+
+  def find_by_status(value)
+    find_by(:status, value)
+  end
+
+  def find_by_unit_price(value)
+    find_by(:unit_price, value)
   end
 
   def find_all_by(field, value)
@@ -24,6 +49,18 @@ class Repository
     else
       raise ArgumentError, "Attempted to locate records by '#{field}', but that isn't a valid field for #{records[0].class} objects."
     end
+  end
+
+  def find_all_by_status(value)
+    find_all_by(:status, value)
+  end
+
+  def find_all_by_name(value)
+    find_all_by(:name, value)
+  end
+
+  def find_all_by_result(value)
+    find_all_by(:result, value)
   end
 
   def successful_transactions
