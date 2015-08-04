@@ -18,7 +18,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_can_return_all_instances
-    assert_equal 1001, repo.all.length
+    assert_equal 1000, repo.all.length
   end
 
   def test_it_can_return_random_instance

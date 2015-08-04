@@ -5,10 +5,10 @@ class Merchant < DataInstance
 
   def initialize(merchant, repository)
     @repository = repository
-    @id = merchant[0]
-    @name = merchant[1]
-    @created = merchant[2]
-    @updated = merchant[3]
+    @id = merchant[:id]
+    @name = merchant[:name]
+    @created = merchant[:created_at]
+    @updated = merchant[:updated_at]
   end
 
   def items

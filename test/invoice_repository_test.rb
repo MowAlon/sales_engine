@@ -22,7 +22,7 @@ class InvoiceRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.invoice_repository
 
-    assert_equal 1001, repo.all.length
+    assert_equal 1000, repo.all.length
   end
 
   def test_it_can_return_random_instance

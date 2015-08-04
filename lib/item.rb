@@ -5,13 +5,13 @@ class Item < DataInstance
 
   def initialize(item, repository)
     @repository = repository
-    @id = item[0]
-    @name = item[1]
-    @description = item[2]
-    @unit_price = item[3]
-    @merchant_id = item[4]
-    @created = item[5]
-    @updated = item[6]
+    @id = item[:id]
+    @name = item[:name]
+    @description = item[:description]
+    @unit_price = item[:unit_price]
+    @merchant_id = item[:merchant_id]
+    @created = item[:created_at]
+    @updated = item[:updated_at]
   end
 
   def invoice_items

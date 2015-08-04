@@ -6,13 +6,13 @@ class Transaction < DataInstance
 
   def initialize(transaction, repository)
     @repository = repository
-    @id = transaction[0]
-    @invoice_id = transaction[1]
-    @credit_card_number = transaction[2]
-    @credit_card_expiration_date = transaction[3]
-    @result = transaction[4]
-    @created = transaction[5]
-    @updated = transaction[6]
+    @id = transaction[:id]
+    @invoice_id = transaction[:invoice_id]
+    @credit_card_number = transaction[:credit_card_number]
+    @credit_card_expiration_date = transaction[:credit_card_expiration_date]
+    @result = transaction[:result]
+    @created = transaction[:created_at]
+    @updated = transaction[:updated_at]
   end
 
   def invoice

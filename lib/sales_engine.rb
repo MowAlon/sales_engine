@@ -37,9 +37,13 @@ class SalesEngine
   end
 
   def load_repositories(tables)
-  	tables.map do |table|
-      CSV.foreach("../sales_engine/data/#{table}s.csv") do |row|
-        eval("#{table}_repository").records << eval(to_camel table).new(row, eval("#{table}_repository"))
+  	tables.each do |table|
+      CSV.foreach("../sales_engine/data/#{table}s.csv", :headers => true, :header_converters => :symbol) do |row|
+        hash = {}
+        row.fields.length.times do |field|
+          hash[row.headers[field]] = row.fields[field]
+        end
+        eval("#{table}_repository").records << eval(to_camel table).new(hash, eval("#{table}_repository"))
       end
     end
   end

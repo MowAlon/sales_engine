@@ -5,11 +5,11 @@ class Customer < DataInstance
 
   def initialize(customer, repository)
     @repository = repository
-    @id = customer[0]
-    @first_name = customer[1]
-    @last_name = customer[2]
-    @created = customer[3]
-    @updated = customer[4]
+    @id = customer[:id]
+    @first_name = customer[:first_name]
+    @last_name = customer[:last_name]
+    @created = customer[:created_at]
+    @updated = customer[:updated_at]
   end
 
   def invoices

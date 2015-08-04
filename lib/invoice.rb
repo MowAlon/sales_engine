@@ -5,12 +5,12 @@ class Invoice < DataInstance
 
   def initialize(invoice, repository)
     @repository = repository
-    @id = invoice[0]
-    @customer_id = invoice[1]
-    @merchant_id = invoice[2]
-    @status = invoice[3]
-    @created = invoice[4]
-    @updated = invoice[5]
+    @id = invoice[:id]
+    @customer_id = invoice[:customer_id]
+    @merchant_id = invoice[:merchant_id]
+    @status = invoice[:status]
+    @created = invoice[:created_at]
+    @updated = invoice[:updated_at]
   end
 
   def transactions
