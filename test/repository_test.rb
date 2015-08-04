@@ -32,4 +32,12 @@ class RepositoryTest < Minitest::Test
       repo.find_by "hello", nil
     }
   end
+
+  def test_it_knows_engine
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.customer_repository
+
+    assert_equal engine, repo.sales_engine
+  end
 end
