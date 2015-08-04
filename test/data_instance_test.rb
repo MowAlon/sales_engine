@@ -48,4 +48,12 @@ class DataInstanceTest < Minitest::Test
       assert_kind_of InvoiceItem, invoice_item
     end
   end
+
+  def test_it_knows_repository
+    engine = SalesEngine.new
+    engine.startup
+    customer = engine.customer_repository.find_by(:id, 10)
+
+    assert_equal engine.customer_repository, customer.repository
+  end
 end
