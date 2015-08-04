@@ -1,6 +1,8 @@
-class Transaction
+require_relative 'data_instance'
+
+class Transaction < DataInstance
   attr_reader :transaction_repository, :id, :invoice_id, :credit_card_number
-  attr_reader :credit_card_expiration_date, :result, :created, :updated
+  attr_reader :credit_card_expiration_date, :result
 
   def initialize(transaction, transaction_repository)
     @transaction_repository = transaction_repository

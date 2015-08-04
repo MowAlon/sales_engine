@@ -1,5 +1,7 @@
-class Customer
-  attr_reader :customer_repository, :id, :first_name, :last_name, :created, :updated
+require_relative 'data_instance'
+
+class Customer < DataInstance
+  attr_reader :customer_repository, :id, :first_name, :last_name
 
   def initialize(customer, customer_repository)
     @customer_repository = customer_repository

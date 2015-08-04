@@ -1,5 +1,7 @@
+require_relative 'data_instance'
+
 class Item
-  attr_reader :item_repository, :id, :name, :description, :unit_price, :merchant_id, :created, :updated
+  attr_reader :item_repository, :id, :name, :description, :unit_price, :merchant_id
 
   def initialize(item, item_repository)
     @item_repository = item_repository
