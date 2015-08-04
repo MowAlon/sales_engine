@@ -2,6 +2,10 @@ require_relative 'data_instance'
 
 class Invoice < DataInstance
   attr_reader :customer_id, :merchant_id, :status
+  
+  def type_name
+    :invoice
+  end
 
   def transactions
     # returns a collection of associated Transaction instances
