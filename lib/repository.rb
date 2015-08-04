@@ -31,6 +31,10 @@ class Repository
     find_by(:id, value)
   end
 
+  def find_by_item_id(value)
+    find_by(:item_id, value)
+  end
+
   def find_by_name(value)
     find_by(:name, value)
   end
@@ -63,6 +67,10 @@ class Repository
     find_all_by(:result, value)
   end
 
+  def find_all_by_quantity
+    find_all_by(:quantity, value)
+  end
+
   def successful_transactions
     sales_engine.transaction_repository.find_all_by(:result, "success")
   end
@@ -90,8 +98,8 @@ class Repository
   end
 
   def top_sellers_by_revenue(hash, top_x_sellers)
-    ranked_sellers(hash, top_x_sellers).map do |merchant, revenue|
-      [merchant, dollars(revenue)]
+    ranked_sellers(hash, top_x_sellers).map do |seller, revenue|
+      [seller, dollars(revenue)]
     end
   end
 

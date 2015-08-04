@@ -44,7 +44,7 @@ class CustomerTest < Minitest::Test
 
     expected = "Jewess Group"
 
-    assert_equal expected, customer.favorite_merchant
+    assert_equal expected, customer.favorite_merchant.name
   end
 
 end
