@@ -18,4 +18,13 @@ class DataInstanceTest < Minitest::Test
 
     assert_equal :item_id, item.reference
   end
+
+  def test_can_ask_what_refers_to_it
+    engine = SalesEngine.new
+    engine.startup
+    invoice = engine.invoice_repository.find_by(:id, 4)
+    transaction = engine.transaction_repository.find_by(invoice.reference, invoice.id)
+
+    assert_equal "3", transaction.id
+  end
 end
