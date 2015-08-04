@@ -20,7 +20,7 @@ class ItemRepository < Repository
 
   def items_with_revenue(transaction, hash)
     transaction_invoice_items(transaction).each do |invoice_item|
-      hash[invoice_item.item_id] += invoice_item_revenue(transaction)
+      hash[find_by(:id, invoice_item.item_id)] += invoice_item_revenue(transaction)
     end
   end
 
