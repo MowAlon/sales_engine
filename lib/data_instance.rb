@@ -8,6 +8,10 @@ class DataInstance
     end
   end
 
+  def referred_by search_repository
+    search_repository.find_by(reference, id)
+  end
+
   def to_instance_var variable
     "@#{variable}".to_sym
   end
