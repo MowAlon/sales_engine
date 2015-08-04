@@ -1,10 +1,10 @@
 require_relative 'data_instance'
 
 class Merchant < DataInstance
-  attr_reader :merchant_repository, :name
+  attr_reader :repository, :name
 
-  def initialize(merchant, merchant_repository)
-    @merchant_repository = merchant_repository
+  def initialize(merchant, repository)
+    @repository = repository
     @id = merchant[0]
     @name = merchant[1]
     @created = merchant[2]
@@ -13,38 +13,38 @@ class Merchant < DataInstance
 
   def items
     # returns a collection of Item instances associated with that merchant for the products they sell
-    merchant_repository.sales_engine.item_repository.find_all_by(:merchant_id, id)
+    repository.sales_engine.item_repository.find_all_by(:merchant_id, id)
   end
 
   def invoices
     # returns a collection of Invoice instances associated with that merchant from their known orders
-    merchant_repository.sales_engine.invoice_repository.find_all_by(:merchant_id, id)
+    repository.sales_engine.invoice_repository.find_all_by(:merchant_id, id)
   end
 
   def total_revenue
     revenue = 0
     #revenue returns the total revenue for that merchant across all transactions
     merchant_successful_transactions.each do |transaction|
-      revenue += merchant_repository.invoice_item_revenue(transaction)
+      revenue += repository.invoice_item_revenue(transaction)
     end
-    "#{name} Total revenue: #{merchant_repository.dollars(revenue)}"
+    "#{name} Total revenue: #{repository.dollars(revenue)}"
   end
 
   def merchant_successful_transactions
     invoices.map do |invoice|
-      merchant_repository.successful_transactions.find {|t| t.invoice_id == invoice.id}
+      repository.successful_transactions.find {|t| t.invoice_id == invoice.id}
     end
   end
 
   def revenue_on_date(date)
     revenue = calculate_revenue_on_date(date)
-    "#{name} Total revenue on #{date}: #{merchant_repository.dollars(revenue)}"
+    "#{name} Total revenue on #{date}: #{repository.dollars(revenue)}"
   end
 
   def calculate_revenue_on_date(date)
     revenue = 0
     merchant_successful_transactions.each do |transaction|
-      revenue += merchant_repository.invoice_item_revenue(transaction) if transaction.created[0..9] == date
+      revenue += repository.invoice_item_revenue(transaction) if transaction.created[0..9] == date
     end
     revenue
   end
@@ -59,7 +59,7 @@ class Merchant < DataInstance
     hash = Hash.new(0)
     merchant_successful_transactions.each do |transaction|
       invoice = invoices.find {|invoice| invoice.id == transaction.invoice.id}
-      customer = merchant_repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id )
+      customer = repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id )
       hash[customer] += 1
     end
     hash
@@ -69,7 +69,7 @@ class Merchant < DataInstance
     #customers_with_pending_invoices returns a collection of Customer instances which have pending (unpaid) invoices. An invoice is considered pending if none of it’s transactions are successful.
     naughty_customers = {}
     all_pending.each do |invoice|
-      customer = merchant_repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id)
+      customer = repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id)
       naughty_customers[customer.id] = "#{customer.first_name} #{customer.last_name}"
     end
     naughty_customers
@@ -82,7 +82,7 @@ class Merchant < DataInstance
   end
 
   def no_successful_transactions?(invoice)
-    transactions = merchant_repository.sales_engine.transaction_repository.find_all_by(:invoice_id, invoice.id)
+    transactions = repository.sales_engine.transaction_repository.find_all_by(:invoice_id, invoice.id)
     transactions.none? {|transaction| transaction.result == "success"}
   end
 
