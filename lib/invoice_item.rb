@@ -1,7 +1,7 @@
 require_relative 'data_instance'
 
 class InvoiceItem < DataInstance
-  attr_reader :repository, :item_id, :invoice_id, :quantity, :unit_price
+  attr_reader :item_id, :invoice_id, :quantity, :unit_price
 
   def initialize(invoice_item, repository)
     @repository = repository
