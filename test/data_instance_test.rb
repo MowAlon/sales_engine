@@ -56,4 +56,12 @@ class DataInstanceTest < Minitest::Test
 
     assert_equal engine.customer_repository, customer.repository
   end
+
+  def test_it_knows_engine
+    engine = SalesEngine.new
+    engine.startup
+    invoice = engine.invoice_repository.find_by(:id, 14)
+
+    assert_equal engine, invoice.sales_engine
+  end
 end

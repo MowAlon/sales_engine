@@ -16,6 +16,10 @@ class DataInstance
     search_repository.find_by(reference, id)
   end
 
+  def sales_engine
+    repository.sales_engine
+  end
+
   def to_instance_var variable
     "@#{variable}".to_sym
   end
