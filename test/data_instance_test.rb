@@ -12,4 +12,10 @@ class DataInstanceTest < Minitest::Test
 
     assert_equal :customer, customer.type_name
   end
+
+  def test_it_knows_reference_name
+    item = Item.new Hash.new(:id => "1"), nil
+
+    assert_equal :item_id, item.reference
+  end
 end

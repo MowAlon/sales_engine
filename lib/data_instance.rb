@@ -11,4 +11,8 @@ class DataInstance
   def to_instance_var variable
     "@#{variable}".to_sym
   end
+
+  def reference
+    "#{type_name}_id".to_sym
+  end
 end
