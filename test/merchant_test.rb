@@ -88,4 +88,9 @@ class MerchantTest < Minitest::Test
     assert_equal expected, merchant.customers_with_pending_invoices
   end
 
+  def test_knows_own_type_name
+    merchant = engine.merchant_repository.find_by(:id, 34)
+    
+    assert_equal :merchant, merchant.type_name
+  end
 end

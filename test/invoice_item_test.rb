@@ -50,4 +50,9 @@ class InvoiceItemTest < Minitest::Test
     assert_nil invoice_item.item
   end
 
+  def test_it_knows_type_name
+    invoice_item = engine.invoice_item_repository.find_by(:id, 13)
+
+    assert_equal :invoice_item, invoice_item.type_name
+  end
 end
