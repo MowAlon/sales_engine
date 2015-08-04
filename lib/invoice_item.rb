@@ -1,10 +1,10 @@
 require_relative 'data_instance'
 
 class InvoiceItem < DataInstance
-  attr_reader :invoice_item_repository, :item_id, :invoice_id, :quantity, :unit_price
+  attr_reader :repository, :item_id, :invoice_id, :quantity, :unit_price
 
-  def initialize(invoice_item, invoice_item_repository)
-    @invoice_item_repository = invoice_item_repository
+  def initialize(invoice_item, repository)
+    @repository = repository
     @id = invoice_item[0]
     @item_id = invoice_item[1]
     @invoice_id = invoice_item[2]
@@ -16,12 +16,12 @@ class InvoiceItem < DataInstance
 
   def invoice
     # returns an instance of Invoice associated with this object
-    invoice_item_repository.sales_engine.invoice_repository.find_by(:id, invoice_id)
+    repository.sales_engine.invoice_repository.find_by(:id, invoice_id)
   end
 
   def item
     # returns an instance of Item associated with this object
-    invoice_item_repository.sales_engine.item_repository.find_by(:id, item_id)
+    repository.sales_engine.item_repository.find_by(:id, item_id)
   end
 
 
