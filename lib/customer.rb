@@ -3,13 +3,13 @@ require_relative 'data_instance'
 class Customer < DataInstance
   attr_reader :first_name, :last_name
 
-  def initialize(customer, repository)
+  def initialize(attributes, repository)
     @repository = repository
-    @id = customer[:id]
-    @first_name = customer[:first_name]
-    @last_name = customer[:last_name]
-    @created = customer[:created_at]
-    @updated = customer[:updated_at]
+    @id = attributes[:id]
+    @first_name = attributes[:first_name]
+    @last_name = attributes[:last_name]
+    @created = attributes[:created_at]
+    @updated = attributes[:updated_at]
   end
 
   def invoices
