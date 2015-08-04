@@ -8,8 +8,7 @@ class Item < DataInstance
   end
 
   def invoice_items
-    # returns a collection of InvoiceItems associated with this object
-    repository.sales_engine.invoice_item_repository.find_all_by(:item_id, id)
+    all_referred_by sales_engine.invoice_item_repository
   end
 
   def merchant

@@ -8,13 +8,11 @@ class Merchant < DataInstance
   end
 
   def items
-    # returns a collection of Item instances associated with that merchant for the products they sell
-    repository.sales_engine.item_repository.find_all_by(:merchant_id, id)
+    all_referred_by sales_engine.item_repository
   end
 
   def invoices
-    # returns a collection of Invoice instances associated with that merchant from their known orders
-    repository.sales_engine.invoice_repository.find_all_by(:merchant_id, id)
+    all_referred_by sales_engine.invoice_repository
   end
 
   def total_revenue

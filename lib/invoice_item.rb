@@ -8,12 +8,10 @@ class InvoiceItem < DataInstance
   end
 
   def invoice
-    # returns an instance of Invoice associated with this object
     repository.sales_engine.invoice_repository.find_by(:id, invoice_id)
   end
 
   def item
-    # returns an instance of Item associated with this object
     repository.sales_engine.item_repository.find_by(:id, item_id)
   end
 
