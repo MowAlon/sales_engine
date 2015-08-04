@@ -40,4 +40,13 @@ class RepositoryTest < Minitest::Test
 
     assert_equal engine, repo.sales_engine
   end
+
+  def test_it_knows_child_reference
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_repository
+    invoice = engine.invoice_repository.find_by(:id, 50)
+
+    assert_equal repo.child_reference, invoice.reference
+  end
 end
