@@ -13,7 +13,7 @@ class Invoice < DataInstance
 
   def invoice_items
     # returns a collection of associated InvoiceItem instances
-    repository.sales_engine.invoice_item_repository.find_all_by(:invoice_id, id)
+    all_referred_by sales_engine.invoice_item_repository
   end
 
   def items
