@@ -32,12 +32,14 @@ class SalesEngine
     load_repositories(tables)
   end
 
+  def to_camel(input)
+    input.split('_').map{|word| word.capitalize}.join
+  end
+
   def load_repositories(tables)
-    classes = tables.map {|table| table.split('_').map{|word| word.capitalize}.join}
-    tables = tables.zip(classes)
   	tables.map do |table|
-      CSV.foreach("../sales_engine/data/#{table.first}s.csv") do |row|
-        eval("#{table.first}_repository").records << eval(table.last).new(row, eval("#{table.first}_repository"))
+      CSV.foreach("../sales_engine/data/#{table}s.csv") do |row|
+        eval("#{table}_repository").records << eval(to_camel table).new(row, eval("#{table}_repository"))
       end
     end
   end
