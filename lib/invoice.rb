@@ -2,10 +2,13 @@ require_relative 'data_instance'
 
 class Invoice < DataInstance
   attr_reader :customer_id, :merchant_id, :status
+  
+  def type_name
+    :invoice
+  end
 
   def transactions
-    # returns a collection of associated Transaction instances
-    repository.sales_engine.transaction_repository.find_all_by(:invoice_id, id)
+    all_referred_by sales_engine.transaction_repository
   end
 
   def invoice_items

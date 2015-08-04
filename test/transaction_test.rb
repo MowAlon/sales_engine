@@ -22,4 +22,9 @@ class TransactionTest < Minitest::Test
     assert_equal '33', transaction.invoice.merchant_id
   end
 
+  def test_knows_own_type_name
+    transaction = engine.transaction_repository.find_by(:id, 3)
+    
+    assert_equal :transaction, transaction.type_name
+  end
 end
