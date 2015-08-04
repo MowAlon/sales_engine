@@ -1,7 +1,7 @@
 require_relative 'data_instance'
 
 class Merchant < DataInstance
-  attr_reader :merchant_repository, :id, :name
+  attr_reader :merchant_repository, :name
 
   def initialize(merchant, merchant_repository)
     @merchant_repository = merchant_repository

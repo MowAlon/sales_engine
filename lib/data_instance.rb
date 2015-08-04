@@ -1,3 +1,3 @@
 class DataInstance
-  attr_reader :created, :updated
+  attr_reader :id, :created, :updated
 end
