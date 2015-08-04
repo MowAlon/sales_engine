@@ -1,8 +1,7 @@
 require_relative 'data_instance'
 
 class Transaction < DataInstance
-  attr_reader :invoice_id, :credit_card_number
-  attr_reader :credit_card_expiration_date, :result
+  attr_reader :invoice_id, :credit_card_number, :credit_card_expiration_date, :result
 
   def invoice
     # returns an instance of Invoice associated with this object
