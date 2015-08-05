@@ -10,14 +10,14 @@ class CustomerTest < Minitest::Test
   end
 
   def test_invoices__it_returns_an_array_of_invoices
-    customer = engine.customer_repository.find_by(:id, 999)
+    customer = engine.customer_repository.find_by(:id, "999")
 
     assert_equal Array, customer.invoices.class
     assert customer.invoices.all?{|invoice| invoice.class == Invoice}
   end
 
   def test_invoices__it_returns_the_correct_invoices
-    customer = engine.customer_repository.find_by(:id, 21)
+    customer = engine.customer_repository.find_by(:id, "21")
     invoice_ids = customer.invoices.map {|invoice| invoice.id}
     merchant_ids = customer.invoices.map {|invoice| invoice.merchant_id}
 
@@ -26,13 +26,13 @@ class CustomerTest < Minitest::Test
   end
 
   def test_invoices__it_returns_an_empty_array_when_no_invoices_are_associated_with_the_customer
-    customer = engine.customer_repository.find_by(:id, 999)
+    customer = engine.customer_repository.find_by(:id, "999")
 
     assert_equal [], customer.invoices
   end
 
   def test_it_finds_all_transactions_by_the_customer
-    customer = engine.customer_repository.find_by(:id, 25)
+    customer = engine.customer_repository.find_by(:id, "25")
 
     expected = ["146", "147", "148", "149", "150", "151"]
 
@@ -40,7 +40,7 @@ class CustomerTest < Minitest::Test
   end
 
   def test_it_finds_customers_favorite_merchant
-    customer = engine.customer_repository.find_by(:id, 16)
+    customer = engine.customer_repository.find_by(:id, "16")
 
     expected = "Jewess Group"
 
@@ -48,7 +48,7 @@ class CustomerTest < Minitest::Test
   end
 
   def test_it_knows_own_type_by_default
-    customer = engine.customer_repository.find_by(:id, 16)
+    customer = engine.customer_repository.find_by(:id, "16")
 
     assert_equal :customer, customer.type_name
   end

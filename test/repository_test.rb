@@ -17,13 +17,13 @@ class RepositoryTest < Minitest::Test
   def test_all_returns_empty_array_by_default
     repo = Repository.new "panda"
 
-    assert_equal [], repo.all
+    assert_equal({}, repo.all)
   end
 
   def test_random_returns_nothing_by_default
     repo = Repository.new "jeff"
 
-    assert_nil repo.random
+    assert_equal({}, repo.random)
   end
 
   def test_find_by_throws_error_while_records_are_empty
@@ -39,5 +39,14 @@ class RepositoryTest < Minitest::Test
     repo = engine.customer_repository
 
     assert_equal engine, repo.sales_engine
+  end
+
+  def test_it_knows_child_reference
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_repository
+    invoice = engine.invoice_repository.find_by(:id, 50)
+
+    assert_equal repo.child_reference, invoice.reference
   end
 end

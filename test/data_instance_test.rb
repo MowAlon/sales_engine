@@ -22,7 +22,7 @@ class DataInstanceTest < Minitest::Test
   def test_can_ask_what_refers_to_it
     engine = SalesEngine.new
     engine.startup
-    invoice = engine.invoice_repository.find_by(:id, 4)
+    invoice = engine.invoice_repository.find_by(:id, "4")
     transaction = engine.transaction_repository.find_by(invoice.reference, invoice.id)
 
     assert_equal "3", transaction.id
@@ -31,7 +31,7 @@ class DataInstanceTest < Minitest::Test
   def test_can_ask_what_refers_to_it_using_method
     engine = SalesEngine.new
     engine.startup
-    invoice = engine.invoice_repository.find_by(:id, 4)
+    invoice = engine.invoice_repository.find_by(:id, "4")
     transaction = invoice.referred_by(engine.transaction_repository)
 
     assert_equal "3", transaction.id
@@ -40,7 +40,7 @@ class DataInstanceTest < Minitest::Test
   def test_all_referred_by_returns_array
     engine = SalesEngine.new
     engine.startup
-    item = engine.item_repository.find_by(:id, 1)
+    item = engine.item_repository.find_by(:id, "1")
     invoice_items = item.all_referred_by(engine.invoice_item_repository)
 
     assert_equal 3, invoice_items.length
@@ -52,7 +52,7 @@ class DataInstanceTest < Minitest::Test
   def test_it_knows_repository
     engine = SalesEngine.new
     engine.startup
-    customer = engine.customer_repository.find_by(:id, 10)
+    customer = engine.customer_repository.find_by(:id, "10")
 
     assert_equal engine.customer_repository, customer.repository
   end
@@ -60,7 +60,7 @@ class DataInstanceTest < Minitest::Test
   def test_it_knows_engine
     engine = SalesEngine.new
     engine.startup
-    invoice = engine.invoice_repository.find_by(:id, 14)
+    invoice = engine.invoice_repository.find_by(:id, "14")
 
     assert_equal engine, invoice.sales_engine
   end
