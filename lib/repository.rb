@@ -97,24 +97,8 @@ class Repository
     sales_engine.invoice_repository.find_by(:id, transaction.invoice_id)
   end
 
-  def top_sellers_by_revenue(hash, top_x_sellers)
-    ranked_sellers(hash, top_x_sellers).map do |seller, revenue|
-      seller
-    end
-  end
-
-  def ranked_sellers(hash, top_x_sellers)
-    sorted_hash(hash)[0..(top_x_sellers - 1)]
-  end
-
-  def sorted_hash(hash)
-    hash.to_a.sort {|x, y| y[1] <=> x[1]}
-  end
-
-  def top_sellers_by_items(hash, top_x_sellers)
-    ranked_sellers(hash, top_x_sellers).map do |seller, items|
-      seller
-    end
+  def top_sellers(hash, top_x_sellers)
+    hash.max_by(top_x_sellers) {|item, decimal_value| decimal_value}.to_h.keys
   end
 
   def items_sold(items)

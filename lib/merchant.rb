@@ -41,9 +41,9 @@ class Merchant < DataInstance
   def calculate_revenue_on_date(date)
     revenue = 0
     merchant_successful_transactions.each do |transaction|
-      year = transaction.created_at[0..3]
-      month = transaction.created_at[5..6]
-      day = transaction.created_at[8..9]
+      year = transaction.created_at[0..3].to_i
+      month = transaction.created_at[5..6].to_i
+      day = transaction.created_at[8..9].to_i
       created_date = Date.new(year, month, day)
       revenue += repository.invoice_item_revenue(transaction) if created_date == date
     end

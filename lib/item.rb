@@ -27,7 +27,10 @@ class Item < DataInstance
     end
     sales = hash.values.sort[-1]
     date = hash.key(sales)
-    Date.new(date[0..3], date[5..6], date[8..9])
+    year = date[0..3].to_i
+    month = date[5..6].to_i
+    day = date[8..9].to_i
+    Date.new(year, month, day)
   end
 
   def transaction_successful?(invoice_item)
