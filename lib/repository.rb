@@ -123,4 +123,8 @@ class Repository
   def inspect
     "#<#{self.class} #{all.size} rows>"
   end
+
+  def child_reference
+    records[0].reference
+  end
 end
