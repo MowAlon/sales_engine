@@ -30,9 +30,12 @@ class Merchant < DataInstance
     end
   end
 
-  def revenue_on_date(date)
-    revenue = calculate_revenue_on_date(date)
-    "#{name} Total revenue on #{date}: #{repository.dollars(revenue)}"
+  def revenue(date = nil)
+    if date.nil?
+      total_revenue
+    else
+      calculate_revenue_on_date(date)
+    end
   end
 
   def calculate_revenue_on_date(date)

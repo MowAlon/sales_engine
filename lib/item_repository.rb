@@ -26,7 +26,7 @@ class ItemRepository < Repository
 
   def items_count(transaction, hash)
     transaction_invoice_items(transaction).each do |invoice_item|
-      hash[invoice_item.item_id] += invoice_item.quantity.to_i
+      hash[find_by(:id, invoice_item.item_id)] += invoice_item.quantity.to_i
     end
   end
 

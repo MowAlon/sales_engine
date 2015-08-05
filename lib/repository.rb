@@ -98,7 +98,7 @@ class Repository
 
   def top_sellers_by_revenue(hash, top_x_sellers)
     ranked_sellers(hash, top_x_sellers).map do |seller, revenue|
-      [seller, dollars(revenue)]
+      seller
     end
   end
 
@@ -112,7 +112,7 @@ class Repository
 
   def top_sellers_by_items(hash, top_x_sellers)
     ranked_sellers(hash, top_x_sellers).map do |seller, items|
-      [seller, items_sold(items)]
+      seller
     end
   end
 
