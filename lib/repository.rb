@@ -15,7 +15,7 @@ class Repository
   end
 
   def find_by(field, value)
-    if records.any? { |record| record[1].respond_to?(field) }
+    if records.values.any? { |element| element.respond_to?(field) }
       records.values.find do |element|
         element.send(field) == value
       end
@@ -25,7 +25,7 @@ class Repository
   end
 
   def find_all_by(field, value)
-    if records.any? { |record| record[1].respond_to?(field) }
+    if records.values.any? { |element| element.respond_to?(field) }
       records.values.find_all do |element|
         element.send(field) == value
       end
