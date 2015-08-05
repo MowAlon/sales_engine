@@ -1,3 +1,4 @@
+require 'date'
 require_relative 'data_instance'
 
 class Item < DataInstance
@@ -22,11 +23,11 @@ class Item < DataInstance
     #add quantity if transaction successful
     hash = Hash.new(0)
     invoice_items.each do |invoice_item|
-      hash[invoice_item.created_at[0..9]] += invoice_item.quantity.to_i if transaction_successful?(invoice_item)
+      hash[invoice_item.created_at[0..9]] += invoice_item.quantity.to_i #if transaction_successful?(invoice_item)
     end
     sales = hash.values.sort[-1]
     date = hash.key(sales)
-    "best day for #{name} sales is #{date} with #{sales} units sold"
+    Date.new(date[0..3], date[5..6], date[8..9])
   end
 
   def transaction_successful?(invoice_item)

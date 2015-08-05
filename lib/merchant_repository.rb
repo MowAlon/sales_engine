@@ -7,7 +7,7 @@ class MerchantRepository < Repository
       merchant = transaction_merchant(transaction)
       hash[merchant.name] += invoice_item_revenue(transaction)
     end
-    top_sellers_by_revenue(hash, top_x_sellers).to_h
+    top_sellers_by_revenue(hash, top_x_sellers)
   end
 
   def most_items(top_x_sellers)
@@ -16,13 +16,13 @@ class MerchantRepository < Repository
       merchant = transaction_merchant(transaction)
       hash[merchant.name] += invoice_item_items(transaction)
     end
-    top_sellers_by_items(hash, top_x_sellers).to_h
+    top_sellers_by_items(hash, top_x_sellers)
   end
 
   def revenue(date)
     gross = 0
     successful_transactions.each do |transaction|
-      gross += invoice_item_revenue(transaction) if transaction.created_at[0..9] == date
+      gross += invoice_item_revenue(transaction) if Date.parse(transaction.created_at) == date
     end
     gross
   end

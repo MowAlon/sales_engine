@@ -41,7 +41,11 @@ class Merchant < DataInstance
   def calculate_revenue_on_date(date)
     revenue = 0
     merchant_successful_transactions.each do |transaction|
-      revenue += repository.invoice_item_revenue(transaction) if transaction.created_at[0..9] == date
+      year = transaction.created_at[0..3]
+      month = transaction.created_at[5..6]
+      day = transaction.created_at[8..9]
+      created_date = Date.new(year, month, day)
+      revenue += repository.invoice_item_revenue(transaction) if created_date == date
     end
     revenue
   end
@@ -55,7 +59,7 @@ class Merchant < DataInstance
   def customer_transactions_hash
     hash = Hash.new(0)
     merchant_successful_transactions.each do |transaction|
-      invoice = invoices.find {|invoice| invoice.id == transaction.invoice.id if invoice}
+      invoice = invoices.find {|invoice| invoice.id == transaction.invoice_id}
       customer = repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id )
       hash[customer] += 1
     end

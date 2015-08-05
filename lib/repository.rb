@@ -42,7 +42,8 @@ class Repository
     find_by(:status, value)
   end
 
-  def find_by_unit_price(value)
+  def find_by_unit_price(price)
+    value = (price * 100).to_i
     find_by(:unit_price, value)
   end
 
@@ -66,7 +67,7 @@ class Repository
     find_all_by(:result, value)
   end
 
-  def find_all_by_quantity
+  def find_all_by_quantity(value)
     find_all_by(:quantity, value)
   end
 

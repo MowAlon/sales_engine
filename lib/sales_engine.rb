@@ -39,8 +39,8 @@ class SalesEngine
   def load_repositories(tables)
   	tables.each do |table|
       CSV.foreach("../sales_engine/data/#{table}s.csv", :headers => true,
-                                                        :header_converters => :symbol
-                                                        :converters => :numberic) do |row|
+                                                        :header_converters => :symbol,
+                                                        :converters => :numeric) do |row|
         hash = {}
         row.fields.length.times do |field|
           hash[row.headers[field]] = row.fields[field]
