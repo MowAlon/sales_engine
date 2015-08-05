@@ -3,7 +3,7 @@ class Repository
 
   def initialize(sales_engine)
   	@sales_engine = sales_engine
-    @records = []
+    @records = {}
   end
 
   def all
@@ -11,12 +11,16 @@ class Repository
   end
 
   def random
-    records.sample
+    records.to_a.sample(1).to_h
   end
 
   def find_by(field, value)
-    if records[0].respond_to?(field)
-      records.find {|record| (record.send field).to_s.downcase == value.to_s.downcase}
+    if field == :id
+      records[value]
+    elsif records.values.any? { |element| element.respond_to?(field) }
+      records.values.find do |element|
+        element.send(field) == value
+      end
     else
       raise ArgumentError, "Attempted to locate records by '#{field}', but that isn't a valid field for #{records[0].class} objects."
     end
@@ -47,8 +51,10 @@ class Repository
   end
 
   def find_all_by(field, value)
-    if records[0].respond_to?(field)
-      records.select {|record| (record.send field).to_s.downcase == value.to_s.downcase}
+    if records.values.any? { |element| element.respond_to?(field) }
+      records.values.find_all do |element|
+        element.send(field) == value
+      end
     else
       raise ArgumentError, "Attempted to locate records by '#{field}', but that isn't a valid field for #{records[0].class} objects."
     end

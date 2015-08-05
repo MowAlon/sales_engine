@@ -10,14 +10,14 @@ class MerchantTest < Minitest::Test
   end
 
   def test_items__it_returns_an_array_of_items
-    merchant = engine.merchant_repository.find_by(:id, 11)
+    merchant = engine.merchant_repository.find_by(:id, "11")
 
     assert_equal Array, merchant.items.class
     assert merchant.items.all?{|item| item.class == Item}
   end
 
   def test_items__it_returns_the_correct_items
-    merchant = engine.merchant_repository.find_by(:id, 11)
+    merchant = engine.merchant_repository.find_by(:id, "11")
     item_ids = merchant.items.map {|item| item.id}
     unit_prices = merchant.items.map {|item| item.unit_price}
 
@@ -26,20 +26,20 @@ class MerchantTest < Minitest::Test
   end
 
   def test_items__it_returns_an_empty_array_when_no_items_are_associated_with_the_merchant
-    merchant = engine.merchant_repository.find_by(:id, 50)
+    merchant = engine.merchant_repository.find_by(:id, "50")
 
     assert_equal [], merchant.items
   end
 
   def test_invoices__it_returns_an_array_of_invoices
-    merchant = engine.merchant_repository.find_by(:id, 11)
+    merchant = engine.merchant_repository.find_by(:id, "11")
 
     assert_equal Array, merchant.invoices.class
     assert merchant.invoices.all?{|invoice| invoice.class == Invoice}
   end
 
   def test_invoices__it_returns_the_correct_invoices
-    merchant = engine.merchant_repository.find_by(:id, 77)
+    merchant = engine.merchant_repository.find_by(:id, "77")
     invoice_ids = merchant.invoices.map {|invoice| invoice.id}
     customer_ids = merchant.invoices.map {|invoice| invoice.customer_id}
 
@@ -48,7 +48,7 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_finds_total_revenue
-    merchant = engine.merchant_repository.find_by(:id, 4)
+    merchant = engine.merchant_repository.find_by(:id, "4")
 
     expected = "Cummings-Thiel Total revenue: $1291.44"
 
@@ -56,7 +56,7 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_finds_total_revenue_if_zero
-    merchant = engine.merchant_repository.find_by(:id, 42)
+    merchant = engine.merchant_repository.find_by(:id, "42")
 
     expected = "Glover Inc Total revenue: $0.00"
 
@@ -65,7 +65,7 @@ class MerchantTest < Minitest::Test
 
   def test_it_finds_revenue_by_date
     date = "2012-03-27"
-    merchant = engine.merchant_repository.find_by(:id, 4)
+    merchant = engine.merchant_repository.find_by(:id, "4")
 
     expected = "Cummings-Thiel Total revenue on 2012-03-27: $1291.44"
 
@@ -73,7 +73,7 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_finds_favorite_customer
-    merchant = engine.merchant_repository.find_by(:id, 7)
+    merchant = engine.merchant_repository.find_by(:id, "7")
 
     expected = "Favorite customer name: Wilfred Emmerich, customer id: 28, with 2 successful transactions"
 
@@ -81,7 +81,7 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_finds_customers_with_pending_invoices
-    merchant = engine.merchant_repository.find_by(:id, 34)
+    merchant = engine.merchant_repository.find_by(:id, "34")
 
     expected = {"3"=>"Mariah Toy", "169"=>"Valentine Lang", "184"=>"Cyril Kilback"}
 
@@ -89,7 +89,7 @@ class MerchantTest < Minitest::Test
   end
 
   def test_knows_own_type_name
-    merchant = engine.merchant_repository.find_by(:id, 34)
+    merchant = engine.merchant_repository.find_by(:id, "34")
     
     assert_equal :merchant, merchant.type_name
   end
