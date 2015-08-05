@@ -28,7 +28,7 @@ class MerchantRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.merchant_repository
 
-    assert_kind_of Array, repo.all
+    assert_kind_of Hash, repo.all
   end
 
   def test_it_can_return_all_instances

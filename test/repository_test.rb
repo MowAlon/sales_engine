@@ -17,13 +17,13 @@ class RepositoryTest < Minitest::Test
   def test_all_returns_empty_array_by_default
     repo = Repository.new "panda"
 
-    assert_equal [], repo.all
+    assert_equal({}, repo.all)
   end
 
   def test_random_returns_nothing_by_default
     repo = Repository.new "jeff"
 
-    assert_nil repo.random
+    assert_equal({}, repo.random)
   end
 
   def test_find_by_throws_error_while_records_are_empty
