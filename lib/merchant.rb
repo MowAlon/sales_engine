@@ -55,7 +55,7 @@ class Merchant < DataInstance
   def customer_transactions_hash
     hash = Hash.new(0)
     merchant_successful_transactions.each do |transaction|
-      invoice = invoices.find {|invoice| invoice.id == transaction.invoice.id}
+      invoice = invoices.find {|invoice| invoice.id == transaction.invoice.id if invoice}
       customer = repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id )
       hash[customer] += 1
     end
@@ -64,12 +64,9 @@ class Merchant < DataInstance
 
   def customers_with_pending_invoices
     #customers_with_pending_invoices returns a collection of Customer instances which have pending (unpaid) invoices. An invoice is considered pending if none of it’s transactions are successful.
-    naughty_customers = {}
-    all_pending.each do |invoice|
-      customer = repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id)
-      naughty_customers[customer.id] = "#{customer.first_name} #{customer.last_name}"
+    all_pending.map do |invoice|
+      repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id)
     end
-    naughty_customers
   end
 
   def all_pending
