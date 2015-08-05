@@ -12,8 +12,7 @@ class Item < DataInstance
   end
 
   def merchant
-    # returns an instance of Merchant associated with this object
-    repository.sales_engine.merchant_repository.find_by(:id, merchant_id)
+    refers_to sales_engine.merchant_repository
   end
 
   def best_day
