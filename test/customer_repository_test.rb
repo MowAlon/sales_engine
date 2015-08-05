@@ -16,7 +16,7 @@ class CustomerRepositoryTest < Minitest::Test
   def test_it_can_return_all_instances_as_array
     engine = SalesEngine.new
 
-    assert_kind_of Array, engine.customer_repository.all
+    assert_kind_of Hash, engine.customer_repository.all
   end
 
   def test_can_return_all_instances

@@ -14,7 +14,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_returns_all_instances_as_an_array
-    assert_kind_of Array, repo.all
+    assert_kind_of Hash, repo.all
   end
 
   def test_it_can_return_all_instances
@@ -31,7 +31,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_can_find_by_attribute
-    assert_equal "Item Autem Minima", repo.find_by(:id, 2).name
+    assert_equal "Item Autem Minima", repo.find_by(:id, "2").name
   end
 
   def test_can_find_all_by_attribute

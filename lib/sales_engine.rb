@@ -43,7 +43,7 @@ class SalesEngine
         row.fields.length.times do |field|
           hash[row.headers[field]] = row.fields[field]
         end
-        eval("#{table}_repository").records << eval(to_camel table).new(hash, eval("#{table}_repository"))
+        eval("#{table}_repository").records[row[:id]] = eval(to_camel table).new(hash, eval("#{table}_repository"))
       end
     end
   end

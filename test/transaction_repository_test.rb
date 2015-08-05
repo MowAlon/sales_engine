@@ -16,7 +16,7 @@ class TransactionRepositoryTest < Minitest::Test
   def test_it_can_return_all_instances_as_array
     engine = SalesEngine.new
 
-    assert_kind_of Array, engine.transaction_repository.all
+    assert_kind_of Hash, engine.transaction_repository.all
   end
 
   def test_can_return_all_instances
@@ -44,7 +44,7 @@ class TransactionRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.transaction_repository
 
-    assert_kind_of Transaction, repo.find_by(:invoice_id, 5)
+    assert_kind_of Transaction, repo.find_by(:invoice_id, "5")
   end
 
   def test_can_find_all_by_attribute
