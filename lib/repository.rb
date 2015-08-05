@@ -15,7 +15,6 @@ class Repository
   end
 
   def find_by(field, value)
-    #records.bsearch {|record| record.field <=> id} only works if records are SORTED by field!
     if records[0].respond_to?(field)
       records.find {|record| (record.send field).to_s.downcase == value.to_s.downcase}
     else

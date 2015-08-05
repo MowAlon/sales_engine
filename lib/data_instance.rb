@@ -8,7 +8,23 @@ class DataInstance
     end
   end
 
+  def all_referred_by search_repository
+    search_repository.find_all_by(reference, id)
+  end
+
+  def referred_by search_repository
+    search_repository.find_by(reference, id)
+  end
+
+  def sales_engine
+    repository.sales_engine
+  end
+
   def to_instance_var variable
     "@#{variable}".to_sym
+  end
+
+  def reference
+    "#{type_name}_id".to_sym
   end
 end

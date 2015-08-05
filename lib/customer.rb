@@ -3,9 +3,12 @@ require_relative 'data_instance'
 class Customer < DataInstance
   attr_reader :first_name, :last_name
 
+  def type_name
+    :customer
+  end
+
   def invoices
-    # returns a collection of Invoice instances associated with this object.
-    repository.sales_engine.invoice_repository.find_all_by(:customer_id, id)
+    all_referred_by sales_engine.invoice_repository
   end
 
   def transaction_ids
@@ -20,9 +23,8 @@ class Customer < DataInstance
   end
 
   def transactions
-    # returns an array of Transaction instances associated with the customer
     invoices.map do |invoice|
-      repository.sales_engine.transaction_repository.find_by(:invoice_id, invoice.id)
+      invoice.referred_by sales_engine.transaction_repository
     end
   end
 

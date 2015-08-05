@@ -52,4 +52,9 @@ class ItemTest < Minitest::Test
     assert_equal expected, item.best_day
   end
 
+  def test_it_knows_own_type_name
+    item = engine.item_repository.find_by(:id, 127)
+    
+    assert_equal :item, item.type_name
+  end
 end

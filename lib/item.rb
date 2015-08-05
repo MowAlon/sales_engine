@@ -3,9 +3,12 @@ require_relative 'data_instance'
 class Item < DataInstance
   attr_reader :name, :description, :unit_price, :merchant_id
 
+  def type_name
+    :item
+  end
+
   def invoice_items
-    # returns a collection of InvoiceItems associated with this object
-    repository.sales_engine.invoice_item_repository.find_all_by(:item_id, id)
+    all_referred_by sales_engine.invoice_item_repository
   end
 
   def merchant

@@ -100,4 +100,9 @@ class InvoiceTest < Minitest::Test
     assert_equal "Osinski, Pollich and Koelpin", invoice.merchant.name
   end
 
+  def test_it_knows_type_name
+    invoice = engine.invoice_repository.find_by(:id, 12)
+
+    assert_equal :invoice, invoice.type_name
+  end
 end
