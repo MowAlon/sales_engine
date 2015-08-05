@@ -16,11 +16,9 @@ class Repository
 
   def find_by(field, value)
     if records.any? { |record| record[1].respond_to?(field) }
-      found = []
-      records.find do |record|
-        found << record[1] if record[1].send(field) == value
+      records.values.find do |element|
+        element.send(field) == value
       end
-      found[0]
     else
       raise ArgumentError, "Attempted to locate records by '#{field}', but that isn't a valid field for #{records[0].class} objects."
     end
@@ -28,11 +26,9 @@ class Repository
 
   def find_all_by(field, value)
     if records.any? { |record| record[1].respond_to?(field) }
-      found = []
-      records.values.each do |element|
-        found << element if element.send(field) == value
+      records.values.find_all do |element|
+        element.send(field) == value
       end
-      found
     else
       raise ArgumentError, "Attempted to locate records by '#{field}', but that isn't a valid field for #{records[0].class} objects."
     end
