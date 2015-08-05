@@ -24,7 +24,7 @@ class Invoice < DataInstance
 
   def customer
     # returns an instance of Customer associated with this object
-    repository.sales_engine.customer_repository.find_by(:id, customer_id)
+    refers_to sales_engine.customer_repository
   end
 
   def merchant
