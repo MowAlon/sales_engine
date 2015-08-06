@@ -2,12 +2,12 @@ class MerchantRepository < Repository
   require 'bigdecimal'
 
   def most_revenue(top_x_sellers)
-    hash = Hash.new(0)
+    merchants_with_revenue = Hash.new(0)
     successful_transactions.each do |transaction|
       merchant = transaction_merchant(transaction)
-      hash[merchant.name] += invoice_item_revenue(transaction)
+      merchants_with_revenue[merchant.name] += invoice_item_revenue(transaction)
     end
-    top_sellers(hash, top_x_sellers)
+    top_sellers(merchants_with_revenue, top_x_sellers)
   end
 
   def most_items(top_x_sellers)
@@ -22,7 +22,6 @@ class MerchantRepository < Repository
   def revenue(date)
     gross = 0
     successful_transactions.each do |transaction|
-      require 'pry'; binding.pry
       gross += invoice_item_revenue(transaction) if Date.parse(transaction.created_at) == date
     end
     gross

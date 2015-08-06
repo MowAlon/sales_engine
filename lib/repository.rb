@@ -11,7 +11,7 @@ class Repository
   end
 
   def random
-    records.to_a.sample(1).to_h
+    records.values.sample
   end
 
   def find_by(field, value)
@@ -104,11 +104,7 @@ class Repository
   end
 
   def top_sellers(hash, top_x_sellers)
-    hash.max_by(top_x_sellers) {|item, decimal_value| decimal_value}.to_h.keys
-  end
-
-  def items_sold(items)
-    "Total items sold: #{items.to_i}"
+    hash.max_by(top_x_sellers) {|seller, decimal_value| decimal_value}.to_h.keys
   end
 
   def inspect

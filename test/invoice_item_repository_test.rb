@@ -23,7 +23,7 @@ class InvoiceItemRepositoryTest < Minitest::Test
     engine = SalesEngine.new
     engine.startup
 
-    assert_equal 1001, engine.invoice_item_repository.all.length
+    assert_equal 21687, engine.invoice_item_repository.all.length
   end
 
   def test_can_return_random_instance
@@ -44,7 +44,7 @@ class InvoiceItemRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.invoice_item_repository
 
-    assert_kind_of InvoiceItem, repo.find_by(:invoice_id, "2")
+    assert_kind_of InvoiceItem, repo.find_by(:invoice_id, 2)
   end
 
   def test_can_find_all_by_quantity
@@ -52,7 +52,7 @@ class InvoiceItemRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.invoice_item_repository
 
-    assert_equal 82, repo.find_all_by(:quantity, "10").length
+    assert_equal 2140, repo.find_all_by(:quantity, 10).length
   end
 
   def test_returns_empty_array_if_find_all_returns_nothing

@@ -29,6 +29,6 @@ class DataInstance
   end
 
   def reference
-    "#{type_name}_id".to_sym
+    "#{type_name.to_s}_id".to_sym
   end
 end

@@ -6,7 +6,7 @@ class ItemRepository < Repository
     successful_transactions.each do |transaction|
       items_with_revenue(transaction, hash)
     end
-    top_sellers_by_revenue(hash, top_x_items)
+    top_sellers(hash, top_x_items)
   end
 
   def most_items(top_x_items)
@@ -15,7 +15,7 @@ class ItemRepository < Repository
     successful_transactions.each do |transaction|
       items_count(transaction, hash)
     end
-    top_sellers_by_items(hash, top_x_items)
+    top_sellers(hash, top_x_items)
   end
 
   def items_with_revenue(transaction, hash)
