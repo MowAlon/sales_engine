@@ -107,11 +107,11 @@ class Repository
     hash.max_by(top_x_sellers) {|seller, decimal_value| decimal_value}.to_h.keys
   end
 
-  def inspect
-    "#<#{self.class} #{all.size} rows>"
-  end
-
   def child_reference
     records[1].reference
+  end
+
+  def inspect
+    "#<#{self.class} #{all.size} rows>"
   end
 end

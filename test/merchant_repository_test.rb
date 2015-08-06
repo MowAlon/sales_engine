@@ -36,7 +36,7 @@ class MerchantRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.merchant_repository
 
-    assert_equal 101, repo.all.length
+    assert_equal 100, repo.all.length
   end
 
   def test_it_can_return_random_instance
@@ -57,7 +57,7 @@ class MerchantRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.merchant_repository
 
-    assert_equal "5", repo.find_by(:name, "Williamson Group").id
+    assert_equal 5, repo.find_by(:name, "Williamson Group").id
   end
 
   def test_can_find_all_by_attribute
@@ -80,32 +80,27 @@ class MerchantRepositoryTest < Minitest::Test
     merchant_repo = MerchantRepository.new(engine)
     top_3 = 3
 
-    expected = {"Okuneva, Prohaska and Rolfson"=>"$124181.06",
-                "Bechtelar, Jones and Stokes"=>"$110898.05",
-                "Tromp Inc"=>"$78824.63"}
+    expected = "Kassulke, O'Hara and Quitzon"
 
-    assert_equal expected, merchant_repo.most_revenue(top_3)
+    assert_equal expected, merchant_repo.most_revenue(top_3)[1].name
   end
 
   def test_most_tems_sold
     merchant_repo = MerchantRepository.new(engine)
     top_4 = 4
 
-    expected = {"Okuneva, Prohaska and Rolfson"=>"Total items sold: 2383272",
-      "Bechtelar, Jones and Stokes"=>"Total items sold: 2220166",
-      "Dickinson-Klein"=>"Total items sold: 1421530",
-      "Tromp Inc"=>"Total items sold: 1355112"}
+    expected = "Kassulke, O'Hara and Quitzon"
 
-    assert_equal expected, merchant_repo.most_items_sold(top_4)
+    assert_equal expected, merchant_repo.most_items(top_4)[1].name
   end
 
   def test_it_finds_total_revenue_by_date
     merchant_repo = MerchantRepository.new(engine)
-    date = "2012-03-27"
+    date = Date.new(2012, 3, 27)
 
-    expected = "2012-03-27 Total revenue: $2612315.08"
+    expected = BigDecimal.new('5749357487')
 
-    assert_equal expected, merchant_repo.revenue_by_date(date)
+    assert_equal expected, merchant_repo.revenue(date)
   end
 
 end

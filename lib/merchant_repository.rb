@@ -5,18 +5,18 @@ class MerchantRepository < Repository
     merchants_with_revenue = Hash.new(0)
     successful_transactions.each do |transaction|
       merchant = transaction_merchant(transaction)
-      merchants_with_revenue[merchant.name] += invoice_item_revenue(transaction)
+      merchants_with_revenue[merchant] += invoice_item_revenue(transaction)
     end
     top_sellers(merchants_with_revenue, top_x_sellers)
   end
 
   def most_items(top_x_sellers)
-    hash = Hash.new(0)
+    merchants_with_items = Hash.new(0)
     successful_transactions.each do |transaction|
       merchant = transaction_merchant(transaction)
-      hash[merchant.name] += invoice_item_items(transaction)
+      merchants_with_items[merchant] += invoice_item_items(transaction)
     end
-    top_sellers(hash, top_x_sellers)
+    top_sellers(merchants_with_items, top_x_sellers)
   end
 
   def revenue(date)
@@ -30,7 +30,7 @@ class MerchantRepository < Repository
   private
 
   def transaction_merchant(transaction)
-    sales_engine.merchant_repository.find_by("id", invoice(transaction).merchant_id)
+    sales_engine.merchant_repository.find_by(:id, invoice(transaction).merchant_id)
   end
 
   def invoice_item_items(transaction)

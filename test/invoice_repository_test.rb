@@ -43,7 +43,7 @@ class InvoiceRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.invoice_repository
 
-    assert_equal "10", repo.find_by(:merchant_id, "92").customer_id
+    assert_equal 10, repo.find_by(:merchant_id, 92).customer_id
   end
 
   def test_can_find_all_by_attribute
@@ -51,7 +51,7 @@ class InvoiceRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.invoice_repository
 
-    assert_equal 10, repo.find_all_by(:customer_id, "20").length
+    assert_equal 10, repo.find_all_by(:customer_id, 20).length
   end
 
   def test_returns_empty_array_if_find_all_returns_nothing
@@ -59,6 +59,6 @@ class InvoiceRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.invoice_repository
 
-    assert_equal [], repo.find_all_by(:id, "-5")
+    assert_equal [], repo.find_all_by(:id, -5)
   end
 end

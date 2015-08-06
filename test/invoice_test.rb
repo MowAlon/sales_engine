@@ -25,13 +25,6 @@ class InvoiceTest < Minitest::Test
   	assert_equal [4800749911485986, 4017503416578382, 4536896898764278], cc_numbers
   end
 
-  def test_transactions__it_returns_an_empty_array_when_no_transactions_are_associated_with_the_invoice
-    skip
-    invoice = engine.invoice_repository.find_by(:id, 9999)
-
-    assert_equal [], invoice.transactions
-  end
-
   def test_invoice_items__it_gets_an_array_of_them
     invoice = engine.invoice_repository.find_by(:id, 12)
 
@@ -46,13 +39,6 @@ class InvoiceTest < Minitest::Test
 
     assert_equal [56, 57, 58, 59, 60, 61], invoice_item_ids
     assert_equal [78031, 41702, 71340, 7196, 41702, 22546], item_prices
-  end
-
-  def test_invoice_items__it_returns_an_empty_array_when_no_invoice_items_are_associated_with_the_invoice
-    skip
-    invoice = engine.invoice_repository.find_by(:id, 999)
-
-    assert_equal [], invoice.invoice_items
   end
 
   def test_items__it_gets_an_array_of_items
@@ -70,13 +56,6 @@ class InvoiceTest < Minitest::Test
 
     assert_equal [150, 127, 156, 160, 134], item_ids
     assert_equal [78031, 41702, 71340, 7196, 22546], item_prices
-  end
-
-  def test_items__it_returns_an_empty_array_when_no_items_are_associated_with_the_invoice
-    skip
-    invoice = engine.invoice_repository.find_by(:id, 999)
-
-    assert_equal [], invoice.items
   end
 
   def test_customer__it_can_pull_a_customer
