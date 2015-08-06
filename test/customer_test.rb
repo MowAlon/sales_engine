@@ -25,13 +25,6 @@ class CustomerTest < Minitest::Test
     assert_equal [96, 45, 72, 71, 18, 44, 87, 80], merchant_ids
   end
 
-  def test_invoices__it_returns_an_empty_array_when_no_invoices_are_associated_with_the_customer
-    skip
-    customer = engine.customer_repository.find_by(:id, 999)
-
-    assert_equal [], customer.invoices
-  end
-
   def test_it_finds_all_transactions_by_the_customer
     customer = engine.customer_repository.find_by(:id, 25)
 

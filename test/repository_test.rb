@@ -23,7 +23,7 @@ class RepositoryTest < Minitest::Test
   def test_random_returns_nothing_by_default
     repo = Repository.new "jeff"
 
-    assert_equal({}, repo.random)
+    assert_equal(nil, repo.random)
   end
 
   def test_find_by_throws_error_while_records_are_empty
