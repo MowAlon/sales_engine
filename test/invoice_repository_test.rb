@@ -22,7 +22,7 @@ class InvoiceRepositoryTest < Minitest::Test
     engine.startup
     repo = engine.invoice_repository
 
-    assert_equal 1000, repo.all.length
+    assert_equal 4843, repo.all.length
   end
 
   def test_it_can_return_random_instance
@@ -60,5 +60,22 @@ class InvoiceRepositoryTest < Minitest::Test
     repo = engine.invoice_repository
 
     assert_equal [], repo.find_all_by(:id, -5)
+  end
+
+  def test_it_creates_new_invoice
+    engine = SalesEngine.new
+    engine.startup
+    repo = engine.invoice_repository
+    item1 = engine.item_repository.random
+    item2 = engine.item_repository.random
+    item3 = engine.item_repository.random
+    customer = engine.customer_repository.random
+    merchant = engine.merchant_repository.random
+    invoice = repo.create(customer: customer, merchant: merchant,
+                          status: "shipped", items: [item1, item2, item3])
+
+    assert_equal merchant.id, invoice.merchant_id
+    assert_equal customer.id, invoice.customer.id
+    assert_equal 4844, invoice.id
   end
 end

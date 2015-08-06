@@ -18,7 +18,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_can_return_all_instances
-    assert_equal 1000, repo.all.length
+    assert_equal 2483, repo.all.length
   end
 
   def test_it_can_return_random_instance
@@ -45,19 +45,17 @@ class ItemRepositoryTest < Minitest::Test
   def test_it_finds_items_with_most_revenue
     top_x_items = 3
 
-    expected = {206=>$281219.04, 227=>$244012.03, 584=>$136104.85}
+    expected = "Item Delectus Saepe"
 
-    assert_equal expected, repo.most_revenue(top_x_items)
+    assert_equal expected, repo.most_revenue(top_x_items)[2].name
   end
 
   def test_it_finds_most_sold_items
     top_x_items = 3
 
-    expected = {227=>Total items sold: 63,
-                206=>Total items sold: 48,
-                1978=>Total items sold: 44}
+    expected = "Item Nam Magnam"
 
-    assert_equal expected, repo.most_items(top_x_items)
+    assert_equal expected, repo.most_items(top_x_items)[1].name
   end
 
 end

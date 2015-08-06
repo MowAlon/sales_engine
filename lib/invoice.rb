@@ -28,4 +28,17 @@ class Invoice < DataInstance
     repository.sales_engine.merchant_repository.find_by(:id, merchant_id)
   end
 
+  def charge(*attributes)
+    transaction_id = repository.sales_engine.transaction_repository.records.length + 1
+    credit_card_number = attributes[0][:credit_card_number]
+    credit_card_expiration_date = attributes[0][:credit_card_expiration]
+    result = attributes[0][:result]
+    attributes = {:id=>transaction_id, :invoice_id=> id,
+                  :credit_card_number=> credit_card_number,
+                  :credit_card_expiration_date=> credit_card_expiration_date,
+                  :result=> result, :created_at=> Time.now.utc,
+                  :updated_at=> Time.now.utc}
+    repository.sales_engine.transaction_repository.records[transaction_id] = Transaction.new(attributes, repository.sales_engine.transaction_repository.records)
+  end
+
 end
