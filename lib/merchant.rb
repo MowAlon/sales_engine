@@ -25,7 +25,9 @@ class Merchant < DataInstance
 
   def merchant_successful_transactions
     invoices.map do |invoice|
-      repository.successful_transactions.find {|t| t.invoice_id == invoice.id if t}
+      repository.successful_transactions.find do |transaction|
+        transaction.invoice_id == invoice.id if transaction
+      end
     end
   end
 
@@ -38,17 +40,20 @@ class Merchant < DataInstance
   end
 
   def calculate_revenue_on_date(date)
-    revenue = 0
+    gross = 0
     merchant_successful_transactions.each do |transaction|
       if transaction
-        year = transaction.created_at[0..3].to_i
-        month = transaction.created_at[5..6].to_i
-        day = transaction.created_at[8..9].to_i
+        repo = repository.invoice_repository
+        transaction_invoice = repo.find_by(:id, transaction.invoice_id)
+        revenue = repository.invoice_item_revenue(transaction)
+        year = transaction_invoice.created_at[0..3].to_i
+        month = transaction_invoice.created_at[5..6].to_i
+        day = transaction_invoice.created_at[8..9].to_i
         created_date = Date.new(year, month, day)
-        revenue += repository.invoice_item_revenue(transaction) if created_date == date
+        gross += revenue if created_date == date
       end
     end
-    revenue
+    gross
   end
 
   def favorite_customer
@@ -56,17 +61,19 @@ class Merchant < DataInstance
   end
 
   def customer_transactions
-    merchant_successful_transactions.each_with_object(Hash.new(0)) do |transaction, hash|
+    transactions = merchant_successful_transactions
+    repo = repository.sales_engine.customer_repository
+    transactions.each_with_object(Hash.new(0)) do |transaction, hash|
       invoice = invoices.find {|invoice| invoice.id == transaction.invoice_id}
-      customer = repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id )
+      customer = repo.find_by(:id, invoice.customer_id )
       hash[customer] += 1
     end
   end
 
   def customers_with_pending_invoices
-    #customers_with_pending_invoices returns a collection of Customer instances which have pending (unpaid) invoices. An invoice is considered pending if none of it’s transactions are successful.
+    repo = repository.sales_engine.customer_repository
     all_pending.map do |invoice|
-      repository.sales_engine.customer_repository.find_by(:id, invoice.customer_id)
+      repo.find_by(:id, invoice.customer_id)
     end
   end
 
@@ -77,7 +84,8 @@ class Merchant < DataInstance
   end
 
   def no_successful_transactions?(invoice)
-    transactions = repository.sales_engine.transaction_repository.find_all_by(:invoice_id, invoice.id)
+    repo = repository.sales_engine.transaction_repository
+    transactions = repo.find_all_by(:invoice_id, invoice.id)
     transactions.none? {|transaction| transaction.result == "success"}
   end
 end

@@ -56,7 +56,7 @@ class MerchantTest < Minitest::Test
   def test_it_finds_total_revenue
     merchant = engine.merchant_repository.find_by(:id, 4)
 
-    expected = BigDecimal.new('55805522')
+    expected = BigDecimal.new('55805522')/100
 
     assert_equal expected, merchant.total_revenue
   end
@@ -65,7 +65,7 @@ class MerchantTest < Minitest::Test
     date = Date.new(2012, 3, 27)
     merchant = engine.merchant_repository.find_by(:id, 4)
 
-    expected = BigDecimal.new('55805522')
+    expected = BigDecimal.new('55805522')/100
 
     assert_equal expected, merchant.revenue(date)
   end

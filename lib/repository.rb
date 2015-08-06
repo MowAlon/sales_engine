@@ -2,12 +2,12 @@ class Repository
   attr_reader :sales_engine, :records
 
   def initialize(sales_engine)
-  	@sales_engine = sales_engine
+    @sales_engine = sales_engine
     @records = {}
   end
 
   def all
-  	records
+    records
   end
 
   def random
@@ -22,7 +22,9 @@ class Repository
         element.send(field) == value
       end
     else
-      raise ArgumentError, "Attempted to locate records by '#{field}', but that isn't a valid field for #{records[0].class} objects."
+      raise ArgumentError, "Attempted to locate records by '#{field}',
+                            but that isn't a valid field for
+                            #{records[0].class} objects."
     end
   end
 
@@ -57,7 +59,9 @@ class Repository
         element.send(field) == value
       end
     else
-      raise ArgumentError, "Attempted to locate records by '#{field}', but that isn't a valid field for #{records[0].class} objects."
+      raise ArgumentError, "Attempted to locate records by '#{field}',
+                            but that isn't a valid field for
+                            #{records[0].class} objects."
     end
   end
 
@@ -84,23 +88,29 @@ class Repository
   def invoice_item_revenue(transaction)
     sum = 0
     invoice_items(transaction).each do |invoice_item|
-      sum += BigDecimal(invoice_item.quantity) * BigDecimal(invoice_item.unit_price)
+      quantity = BigDecimal(invoice_item.quantity)
+      price = BigDecimal(invoice_item.unit_price)/100
+      #price is stored in cents but we want to return dollars
+      sum += quantity * price
     end if invoice_items(transaction)
     sum
   end
 
   def dollars(revenue)
     dollar_amount = revenue.to_i.to_s[0..-3].ljust(1, "0")
-    cents_amount = revenue.to_i.to_s.delete(revenue.to_i.to_s[0..-3]).rjust(2, "0")
+    whats_left = revenue.to_i.to_s.delete(revenue.to_i.to_s[0..-3])
+    cents_amount = whats_left.rjust(2, "0")
     "$#{dollar_amount}.#{cents_amount}"
   end
 
   def invoice_items(transaction)
-    sales_engine.invoice_item_repository.find_all_by(:invoice_id, transaction.invoice_id) if transaction
+    repo = sales_engine.invoice_item_repository
+    repo.find_all_by(:invoice_id, transaction.invoice_id) if transaction
   end
 
   def invoice(transaction)
-    sales_engine.invoice_repository.find_by(:id, transaction.invoice_id)
+    repo = sales_engine.invoice_repository
+    repo.find_by(:id, transaction.invoice_id)
   end
 
   def top_sellers(hash, top_x_sellers)

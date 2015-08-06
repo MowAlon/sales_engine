@@ -98,7 +98,7 @@ class MerchantRepositoryTest < Minitest::Test
     merchant_repo = MerchantRepository.new(engine)
     date = Date.new(2012, 3, 27)
 
-    expected = BigDecimal.new('5749357487')
+    expected = BigDecimal.new('5749357487')/100
 
     assert_equal expected, merchant_repo.revenue(date)
   end

@@ -17,7 +17,9 @@ class Invoice < DataInstance
 
   def items
     item_ids = invoice_items.map {|invoice_item| invoice_item.item_id}.uniq
-    item_ids.map {|item_id| repository.sales_engine.item_repository.find_by(:id, item_id)}
+    item_ids.map do |item_id|
+      repository.sales_engine.item_repository.find_by(:id, item_id)
+    end
   end
 
   def customer
@@ -29,7 +31,8 @@ class Invoice < DataInstance
   end
 
   def charge(*attributes)
-    transaction_id = repository.sales_engine.transaction_repository.records.length + 1
+    records = repository.sales_engine.transaction_repository.records
+    transaction_id = records.length + 1
     credit_card_number = attributes[0][:credit_card_number]
     credit_card_expiration_date = attributes[0][:credit_card_expiration]
     result = attributes[0][:result]
@@ -38,7 +41,7 @@ class Invoice < DataInstance
                   :credit_card_expiration_date=> credit_card_expiration_date,
                   :result=> result, :created_at=> Time.now.utc,
                   :updated_at=> Time.now.utc}
-    repository.sales_engine.transaction_repository.records[transaction_id] = Transaction.new(attributes, repository.sales_engine.transaction_repository.records)
+    records[transaction_id] = Transaction.new(attributes, records)
   end
 
 end

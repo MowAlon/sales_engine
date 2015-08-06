@@ -16,10 +16,10 @@ class Customer < DataInstance
   end
 
   def favorite_merchant
-    # returns an instance of Merchant where the customer has conducted the most successful transactions
     hash = Hash.new(0)
     invoices.each {|invoice| hash[invoice.merchant_id] += 1}
-    repository.sales_engine.merchant_repository.find_by(:id, ranked_merchants(hash)[0][0])
+    repo = repository.sales_engine.merchant_repository
+    repo.find_by(:id, ranked_merchants(hash)[0][0])
   end
 
   def transactions

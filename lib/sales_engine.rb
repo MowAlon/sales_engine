@@ -15,12 +15,13 @@ require_relative 'transaction_repository'
 
 
 class SalesEngine
-  attr_reader :folder, :merchant_repository, :invoice_repository, :item_repository
-  attr_reader :invoice_item_repository, :customer_repository, :transaction_repository
+  attr_reader :folder, :merchant_repository, :invoice_repository,
+              :item_repository, :invoice_item_repository,
+              :customer_repository, :transaction_repository
 
   def initialize(folder = nil)
     @folder = folder || default
-  	@merchant_repository = MerchantRepository.new(self)
+    @merchant_repository = MerchantRepository.new(self)
     @invoice_repository = InvoiceRepository.new(self)
     @item_repository = ItemRepository.new(self)
     @invoice_item_repository = InvoiceItemRepository.new(self)
@@ -43,15 +44,16 @@ class SalesEngine
   end
 
   def load_repositories(tables)
-  	tables.each do |table|
+   tables.each do |table|
       CSV.foreach("#{folder}/#{table}s.csv", :headers => true,
-                                                        :header_converters => :symbol,
-                                                        :converters => :numeric) do |row|
+                                             :header_converters => :symbol,
+                                             :converters => :numeric) do |row|
         hash = {}
         row.fields.length.times do |field|
           hash[row.headers[field]] = row.fields[field]
         end
-        eval("#{table}_repository").records[row[:id]] = eval(to_camel table).new(hash, eval("#{table}_repository"))
+        class_repo = eval(to_camel table).new(hash, eval("#{table}_repository"))
+        eval("#{table}_repository").records[row[:id]] = class_repo
       end
     end
   end

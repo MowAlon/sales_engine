@@ -22,7 +22,8 @@ class MerchantRepository < Repository
   def revenue(date)
     gross = 0
     successful_transactions.each do |transaction|
-      gross += invoice_item_revenue(transaction) if Date.parse(transaction.created_at) == date
+      dates_match = Date.parse(transaction.created_at) == date
+      gross += invoice_item_revenue(transaction) if dates_match
     end
     gross
   end
@@ -30,7 +31,8 @@ class MerchantRepository < Repository
   private
 
   def transaction_merchant(transaction)
-    sales_engine.merchant_repository.find_by(:id, invoice(transaction).merchant_id)
+    repo = sales_engine.merchant_repository
+    repo.find_by(:id, invoice(transaction).merchant_id)
   end
 
   def invoice_item_items(transaction)
