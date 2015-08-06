@@ -15,10 +15,11 @@ require_relative 'transaction_repository'
 
 
 class SalesEngine
-  attr_reader :merchant_repository, :invoice_repository, :item_repository
+  attr_reader :folder, :merchant_repository, :invoice_repository, :item_repository
   attr_reader :invoice_item_repository, :customer_repository, :transaction_repository
 
-  def initialize(args=nil)
+  def initialize(folder = nil)
+    @folder = folder || default
   	@merchant_repository = MerchantRepository.new(self)
     @invoice_repository = InvoiceRepository.new(self)
     @item_repository = ItemRepository.new(self)
@@ -27,9 +28,14 @@ class SalesEngine
     @transaction_repository = TransactionRepository.new(self)
   end
 
+  def default
+    "../sales_engine/data"
+  end
+
   def startup
     tables = %w[merchant invoice item invoice_item customer transaction]
     load_repositories(tables)
+    transaction_repository.load_successful_transactions
   end
 
   def to_camel(input)
@@ -38,7 +44,7 @@ class SalesEngine
 
   def load_repositories(tables)
   	tables.each do |table|
-      CSV.foreach("../sales_engine/data/#{table}s.csv", :headers => true,
+      CSV.foreach("#{folder}/#{table}s.csv", :headers => true,
                                                         :header_converters => :symbol,
                                                         :converters => :numeric) do |row|
         hash = {}

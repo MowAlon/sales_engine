@@ -2,7 +2,7 @@ require_relative 'data_instance'
 
 class Invoice < DataInstance
   attr_reader :customer_id, :merchant_id, :status
-  
+
   def type_name
     :invoice
   end
@@ -16,9 +16,8 @@ class Invoice < DataInstance
   end
 
   def items
-    invoice_items.map do |invoice_item|
-      invoice_item.refers_to sales_engine.item_repository
-    end.uniq
+    item_ids = invoice_items.map {|invoice_item| invoice_item.item_id}.uniq
+    item_ids.map {|item_id| repository.sales_engine.item_repository.find_by(:id, item_id)}
   end
 
   def customer

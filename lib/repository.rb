@@ -27,7 +27,7 @@ class Repository
   end
 
   def find_by_credit_card_number(value)
-    find_by(:credit_card_number, value)
+    find_by(:credit_card_number, value.to_i)
   end
 
   def find_by_id(value)
@@ -78,14 +78,14 @@ class Repository
   end
 
   def successful_transactions
-    sales_engine.transaction_repository.find_all_by(:result, "success")
+    sales_engine.transaction_repository.all_successful_transactions
   end
 
   def invoice_item_revenue(transaction)
     sum = 0
     invoice_items(transaction).each do |invoice_item|
       sum += BigDecimal(invoice_item.quantity) * BigDecimal(invoice_item.unit_price)
-    end
+    end if invoice_items(transaction)
     sum
   end
 
@@ -96,7 +96,7 @@ class Repository
   end
 
   def invoice_items(transaction)
-    sales_engine.invoice_item_repository.find_all_by(:invoice_id, transaction.invoice_id)
+    sales_engine.invoice_item_repository.find_all_by(:invoice_id, transaction.invoice_id) if transaction
   end
 
   def invoice(transaction)
@@ -112,6 +112,6 @@ class Repository
   end
 
   def child_reference
-    records[0].reference
+    records[1].reference
   end
 end
