@@ -1,40 +1,47 @@
-class Invoice
-  attr_reader :invoice_repository, :id, :customer_id, :merchant_id, :status, :created, :updated
+require_relative 'data_instance'
 
-  def initialize(invoice, invoice_repository)
-    @invoice_repository = invoice_repository
-    @id = invoice[0]
-    @customer_id = invoice[1]
-    @merchant_id = invoice[2]
-    @status = invoice[3]
-    @created = invoice[4]
-    @updated = invoice[5]
+class Invoice < DataInstance
+  attr_reader :customer_id, :merchant_id, :status
+
+  def type_name
+    :invoice
   end
 
   def transactions
-    # returns a collection of associated Transaction instances
-    invoice_repository.sales_engine.transaction_repository.find_all_by(:invoice_id, id)
+    all_referred_by sales_engine.transaction_repository
   end
 
   def invoice_items
-    # returns a collection of associated InvoiceItem instances
-    invoice_repository.sales_engine.invoice_item_repository.find_all_by(:invoice_id, id)
+    all_referred_by sales_engine.invoice_item_repository
   end
 
   def items
-    # returns a collection of associated Items by way of InvoiceItem objects
     item_ids = invoice_items.map {|invoice_item| invoice_item.item_id}.uniq
-    item_ids.map {|item_id| invoice_repository.sales_engine.item_repository.find_by(:id, item_id)}
+    item_ids.map do |item_id|
+      repository.sales_engine.item_repository.find_by(:id, item_id)
+    end
   end
 
   def customer
-    # returns an instance of Customer associated with this object
-    invoice_repository.sales_engine.customer_repository.find_by(:id, customer_id)
+    refers_to sales_engine.customer_repository
   end
 
   def merchant
-    # returns an instance of Merchant associated with this object
-    invoice_repository.sales_engine.merchant_repository.find_by(:id, merchant_id)
+    repository.sales_engine.merchant_repository.find_by(:id, merchant_id)
+  end
+
+  def charge(*attributes)
+    records = repository.sales_engine.transaction_repository.records
+    transaction_id = records.length + 1
+    credit_card_number = attributes[0][:credit_card_number]
+    credit_card_expiration_date = attributes[0][:credit_card_expiration]
+    result = attributes[0][:result]
+    attributes = {:id=>transaction_id, :invoice_id=> id,
+                  :credit_card_number=> credit_card_number,
+                  :credit_card_expiration_date=> credit_card_expiration_date,
+                  :result=> result, :created_at=> Time.now.utc,
+                  :updated_at=> Time.now.utc}
+    records[transaction_id] = Transaction.new(attributes, records)
   end
 
 end

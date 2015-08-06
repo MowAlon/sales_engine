@@ -1,4 +1,9 @@
 class CustomerRepository < Repository
-  # FIELDS = {id: 0, first_name: 1, last_name: 2, created: 3, updated: 4}
+  def find_by_last_name value
+    find_by(:last_name, value)
+  end
 
+  def find_all_by_first_name value
+    find_all_by(:first_name, value)
+  end
 end

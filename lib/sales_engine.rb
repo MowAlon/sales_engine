@@ -15,11 +15,13 @@ require_relative 'transaction_repository'
 
 
 class SalesEngine
-  attr_reader :merchant_repository, :invoice_repository, :item_repository
-  attr_reader :invoice_item_repository, :customer_repository, :transaction_repository
+  attr_reader :folder, :merchant_repository, :invoice_repository,
+              :item_repository, :invoice_item_repository,
+              :customer_repository, :transaction_repository
 
-  def initialize
-  	@merchant_repository = MerchantRepository.new(self)
+  def initialize(folder = nil)
+    @folder = folder || default
+    @merchant_repository = MerchantRepository.new(self)
     @invoice_repository = InvoiceRepository.new(self)
     @item_repository = ItemRepository.new(self)
     @invoice_item_repository = InvoiceItemRepository.new(self)
@@ -27,17 +29,31 @@ class SalesEngine
     @transaction_repository = TransactionRepository.new(self)
   end
 
+  def default
+    "../sales_engine/data"
+  end
+
   def startup
     tables = %w[merchant invoice item invoice_item customer transaction]
     load_repositories(tables)
+    transaction_repository.load_successful_transactions
+  end
+
+  def to_camel(input)
+    input.split('_').map{|word| word.capitalize}.join
   end
 
   def load_repositories(tables)
-    classes = tables.map {|table| table.split('_').map{|word| word.capitalize}.join}
-    tables = tables.zip(classes)
-  	tables.map do |table|
-      CSV.foreach("./data/#{table.first}s.csv") do |row|
-        eval("#{table.first}_repository").records << eval(table.last).new(row, eval("#{table.first}_repository"))
+   tables.each do |table|
+      CSV.foreach("#{folder}/#{table}s.csv", :headers => true,
+                                             :header_converters => :symbol,
+                                             :converters => :numeric) do |row|
+        hash = {}
+        row.fields.length.times do |field|
+          hash[row.headers[field]] = row.fields[field]
+        end
+        class_repo = eval(to_camel table).new(hash, eval("#{table}_repository"))
+        eval("#{table}_repository").records[row[:id]] = class_repo
       end
     end
   end
@@ -46,41 +62,3 @@ end
 
 engine = SalesEngine.new
 engine.startup
-
-# require 'pry'; binding.pry
-
-
-
-
-# def startup
-#   load_merchants('./data/merchants.csv')
-#   load_invoices('./data/invoices.csv')
-#   load_items('./data/items.csv')
-#   load_invoice_items('./data/invoice_items.csv')
-#   load_customers('./data/customers.csv')
-#   load_transactions('./data/transactions.csv')
-# end
-#
-# def load_merchants(file)
-# 	CSV.foreach(file) {|row| merchant_repository.records << Merchant.new(row, merchant_repository)}
-# end
-#
-# def load_invoices(file)
-#   CSV.foreach(file) {|row| invoice_repository.records << Invoice.new(row, invoice_repository)}
-# end
-#
-# def load_items(file)
-#   CSV.foreach(file) {|row| item_repository.records << Item.new(row, item_repository)}
-# end
-#
-# def load_invoice_items(file)
-#   CSV.foreach(file) {|row| invoice_item_repository.records << InvoiceItem.new(row, invoice_item_repository)}
-# end
-#
-# def load_customers(file)
-#   CSV.foreach(file) {|row| customer_repository.records << Customer.new(row, customer_repository)}
-# end
-#
-# def load_transactions(file)
-#   CSV.foreach(file) {|row| transaction_repository.records << Transaction.new(row, transaction_repository)}
-# end

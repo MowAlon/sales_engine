@@ -1,34 +1,22 @@
-class InvoiceItem
-  attr_reader :invoice_item_repository, :id, :item_id, :invoice_id, :quantity, :unit_price, :created, :updated
+require_relative 'data_instance'
 
-  def initialize(invoice_item, invoice_item_repository)
-    @invoice_item_repository = invoice_item_repository
-    @id = invoice_item[0]
-    @item_id = invoice_item[1]
-    @invoice_id = invoice_item[2]
-    @quantity = invoice_item[3]
-    @unit_price = invoice_item[4]
-    @created = invoice_item[5]
-    @updated = invoice_item[6]
+class InvoiceItem < DataInstance
+  attr_reader :item_id, :invoice_id, :quantity, :unit_price
+
+  def type_name
+    :invoice_item
   end
 
   def invoice
-    # returns an instance of Invoice associated with this object
-    invoice_item_repository.sales_engine.invoice_repository.find_by(:id, invoice_id)
+    repository.sales_engine.invoice_repository.find_by(:id, invoice_id)
   end
 
   def item
-    # returns an instance of Item associated with this object
-    invoice_item_repository.sales_engine.item_repository.find_by(:id, item_id)
+    repository.sales_engine.item_repository.find_by(:id, item_id)
   end
-
-
-
 
   #untested
   def revenue
     quantity.to_i * unit_price.to_i
   end
-
-
 end
